@@ -19,8 +19,8 @@
 #include "config.h"
 #include "editwin.h"
 
-#include "xpm/filesave.xpm"
-#include "xpm/fileopen.xpm"
+#include "filesave.xpm"
+#include "fileopen.xpm"
 
 extern void cmd_table_init();
 QDir* start_dir; // Verzeichnis, in dem der Editor gestartet wurde
