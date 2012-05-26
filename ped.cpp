@@ -22,14 +22,13 @@
 #include "xpm/filesave.xpm"
 #include "xpm/fileopen.xpm"
 
-extern QDir* start_dir;
-
 extern void cmd_table_init();
 QDir* start_dir; // Verzeichnis, in dem der Editor gestartet wurde
 
-bool isoLatin   = false;
-bool utf8       = true;
-bool debug_flag = false;
+bool isoLatin      = false;
+bool utf8          = true;
+bool debug_flag    = false;
+bool changeInPlace = false;
 
 static char* pedName;
 
@@ -98,6 +97,7 @@ static void usage(const char* reason)
       printf("options: -v   print version\n"
              "         -l   use iso latin1 codec\n"
              "         -u   use utf8 codec (default)\n"
+             "         -i   change file 'in place'\n"
             );
       }
 
@@ -1111,7 +1111,7 @@ int main(int argc, char**argv)
       {
       int c;
       pedName = argv[0];
-      while ((c = getopt(argc, argv, "vlu")) != EOF) {
+      while ((c = getopt(argc, argv, "vlui")) != EOF) {
             switch (c) {
                   case 'v':
                         printVersion(argv[0]);
@@ -1123,6 +1123,9 @@ int main(int argc, char**argv)
                   case 'u':
                         utf8 = true;
                         isoLatin = false;
+                        break;
+                  case 'i':
+                        changeInPlace = true;
                         break;
                   default:
                         usage("bad argument");

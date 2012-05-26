@@ -16,6 +16,8 @@
 #include "text.h"
 #include "utils.h"
 
+extern bool changeInPlace;
+
 FileList files;
 
 //---------------------------------------------------------
@@ -132,6 +134,29 @@ void File::save(const char* name)
             }
       if (!modified)
             return;
+      if (changeInPlace) {
+            QFile f(_fi.filePath());
+            if (!f.open(QIODevice::WriteOnly)) {
+                  QString s = QString("Open File\n") + f.fileName() + QString("\nfailed: ")
+                     + QString(strerror(errno));
+                  QMessageBox::critical(0, "cannot open file", s);
+                  return;
+                  }
+            QTextStream os(&f);
+            if (utf8)
+                  os.setCodec(QTextCodec::codecForName("utf8"));
+            else if (isoLatin)
+                  os.setCodec(QTextCodec::codecForName("latin1"));
+            top.write(os);
+            if (f.error()) {
+                  QString s = QString("Write Temp File\n") + f.fileName() + QString("\nfailed: ")
+                     + f.errorString();
+                  QMessageBox::critical(0, QString("Ped: Write Temp"), s);
+                  return;
+                  }
+            f.close();
+            return;
+            }
       QTemporaryFile temp(_fi.path() + "/PEDXXXXXX");
       temp.setAutoRemove(false);
       if (!temp.open()) {
