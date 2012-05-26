@@ -1,9 +1,13 @@
-/***-------------------------------------------------------
- ***  PEd Editor
- ***  $Id:$
- ***
- ***  (C) - Copyright Werner Schweer 1999; ws@seh.de
- ***-------------------------------------------------------*/
+//=============================================================================
+//  PEd Editor
+//
+//  Copyright (C) 1997-2011 Werner Schweer
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License version 2
+//  as published by the Free Software Foundation and appearing in
+//  the file LICENCE.GPL
+//=============================================================================
 
 #include "ped.h"
 #include "utils.h"
@@ -13,29 +17,10 @@
 #include "tree.h"
 #include "xml.h"
 #include "config.h"
-// #include "action.h"
 #include "editwin.h"
 
 #include "xpm/filesave.xpm"
 #include "xpm/fileopen.xpm"
-#if 0
-// #include "xpm/edit_undo.xpm"
-// #include "xpm/edit_redo.xpm"
-#include "xpm/macro_play.xpm"
-#include "xpm/macro_rec.xpm"
-#include "xpm/hist_back.xpm"
-#include "xpm/hist_vor.xpm"
-#include "xpm/marks.xpm"
-#include "xpm/markz.xpm"
-#include "xpm/search_back.xpm"
-#include "xpm/search_forw.xpm"
-#include "xpm/make.xpm"
-#include "xpm/run.xpm"
-#include "xpm/rebuild.xpm"
-#include "xpm/splith.xpm"
-#include "xpm/splitv.xpm"
-#include "xpm/toggle_tree.xpm"
-#endif
 
 extern QDir* start_dir;
 
@@ -45,6 +30,8 @@ QDir* start_dir; // Verzeichnis, in dem der Editor gestartet wurde
 bool isoLatin   = false;
 bool utf8       = true;
 bool debug_flag = false;
+
+static char* pedName;
 
 static const char* fileOpenText = "Click this button to open a new file.\n\n"
       "You can also select the Open command from the File menu.";
@@ -89,6 +76,30 @@ static const char* splithText = "splittet das Text-Fenster horizontal;\n"
       "bei nochmaliger Betätigung wird der Split wieder aufgehoben";
 static const char* splitvText = "splittet das Text-Fenster vertikal;\n"
       "bei nochmaliger Betätigung wird der Split wieder aufgehoben";
+
+//---------------------------------------------------------
+//   printVersion
+//---------------------------------------------------------
+
+static void printVersion(const char* name)
+      {
+      printf("%s: Version 1.0\n", name);
+      }
+
+//---------------------------------------------------------
+//   usage
+//---------------------------------------------------------
+
+static void usage(const char* reason)
+      {
+      if (reason)
+            printf("%s: %s\n", pedName, reason);
+      printf("usage: %s [options] file[s]\n", pedName);
+      printf("options: -v   print version\n"
+             "         -l   use iso latin1 codec\n"
+             "         -u   use utf8 codec (default)\n"
+            );
+      }
 
 //---------------------------------------------------------
 //   genFileToolbar
@@ -474,7 +485,7 @@ Ped::Ped(int argc, char** argv)
 
       if (!loadStatus(load_last_files)) {
             if (load_last_files) {
-                  printf("usage: kped filename\n");
+                  usage(0);
                   exit(1);
                   }
             setGeometry(geometry_x, geometry_y, geometry_w, geometry_h);
@@ -1093,34 +1104,13 @@ void  Ped::edit_cmd(int cmd, const char* param)
       }
 
 //---------------------------------------------------------
-//   printVersion
-//---------------------------------------------------------
-
-static void printVersion(const char* name)
-      {
-      printf("%s: Version 1.0\n", name);
-      }
-
-//---------------------------------------------------------
-//   usage
-//---------------------------------------------------------
-
-static void usage(const char* name, const char* reason)
-      {
-      printf("%s: %s\n", name, reason);
-      printf("  usage: -v   print version\n"
-             "         -l   use iso latin1 codec\n"
-             "         -u   use utf8 codec (default)\n"
-            );
-      }
-
-//---------------------------------------------------------
 //   main
 //---------------------------------------------------------
 
 int main(int argc, char**argv)
       {
       int c;
+      pedName = argv[0];
       while ((c = getopt(argc, argv, "vlu")) != EOF) {
             switch (c) {
                   case 'v':
@@ -1135,7 +1125,7 @@ int main(int argc, char**argv)
                         isoLatin = false;
                         break;
                   default:
-                        usage(argv[0], "bad argument");
+                        usage("bad argument");
                         return -1;
                   }
             }
@@ -1146,7 +1136,6 @@ int main(int argc, char**argv)
       new QApplication(argc, argv);
       Ped* mw = new Ped(argc, argv);
       mw->show();
-//      mw->setFocus(Qt::OtherFocusReason);
       mw->activateWindow();
       return qApp->exec();
       }

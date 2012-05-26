@@ -1,10 +1,13 @@
-/***-------------------------------------------------------
- ***  PEd Editor
- ***        KDE - Version
- ***  $Id: help.c 1.1 Fri, 24 Nov 2000 15:23:56 +0100 ws $
- ***
- ***  (C) - Copyright Werner Schweer 1999; ws@seh.de
- ***-------------------------------------------------------*/
+//=============================================================================
+//  PEd Editor
+//
+//  Copyright (C) 1997-2011 Werner Schweer
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License version 2
+//  as published by the Free Software Foundation and appearing in
+//  the file LICENCE.GPL
+//=============================================================================
 
 #include "ped.h"
 #include "cmd.h"
@@ -16,8 +19,8 @@
 void Ped::helpAbout()
       {
       QMessageBox::about(this, "qped Editor",
-      "this is qped\n"
-      "Copyright Werner Schweer 2000-2007\nws@seh.de");
+      "This is qped.\n"
+      "Copyright Werner Schweer.\n");
       }
 class CommandsDialog : public QDialog {
 //      QMLBrowser* l;

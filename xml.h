@@ -1,10 +1,13 @@
-//=========================================================
-//  MusE
-//  Linux Music Editor
-//  $Id: xml.h,v 1.4 2006/01/25 16:24:32 wschweer Exp $
+//=============================================================================
+//  PEd Editor
 //
-//  (C) Copyright 2005 Werner Schweer (ws@seh.de)
-//=========================================================
+//  Copyright (C) 1997-2011 Werner Schweer
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License version 2
+//  as published by the Free Software Foundation and appearing in
+//  the file LICENCE.GPL
+//=============================================================================
 
 #ifndef __XML_H__
 #define __XML_H__

@@ -1,13 +1,15 @@
-//=========================================================
-//  MusE
-//  Linux Music Editor
-//  $Id: xml.cpp,v 1.9 2006/01/31 20:33:22 wschweer Exp $
+//=============================================================================
+//  PEd Editor
 //
-//  (C) Copyright 2004-2006 Werner Schweer (ws@seh.de)
-//=========================================================
+//  Copyright (C) 1997-2011 Werner Schweer
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License version 2
+//  as published by the Free Software Foundation and appearing in
+//  the file LICENCE.GPL
+//=============================================================================
 
 #include "xml.h"
-
 
 //---------------------------------------------------------
 //   Xml

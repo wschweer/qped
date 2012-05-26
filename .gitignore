@@ -1,0 +1,9 @@
+.*,
+.qped
+build.debug
+build.release
+build.xcode
+applebuild
+win32build
+win32install
+

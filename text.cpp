@@ -1,9 +1,13 @@
-/***-------------------------------------------------------
- ***  New PEd Editor
- ***  $Id: text.c 1.2 Fri, 12 Jan 2001 12:35:26 +0100 ws $
- ***
- ***  (C) - Copyright Werner Schweer 1997; ws@seh.de
- ***-------------------------------------------------------*/
+//=============================================================================
+//  PEd Editor
+//
+//  Copyright (C) 1997-2011 Werner Schweer
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License version 2
+//  as published by the Free Software Foundation and appearing in
+//  the file LICENCE.GPL
+//=============================================================================
 
 #include "line.h"
 #include "text.h"

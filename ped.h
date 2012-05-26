@@ -1,9 +1,13 @@
-/***-------------------------------------------------------
- ***  PEd Editor
- ***  $Id: app.h 1.2 Thu, 04 Jan 2001 10:24:38 +0100 ws $
- ***
- ***  (C) - Copyright Werner Schweer 1999; ws@seh.de
- ***-------------------------------------------------------*/
+//=============================================================================
+//  PEd Editor
+//
+//  Copyright (C) 1997-2011 Werner Schweer
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License version 2
+//  as published by the Free Software Foundation and appearing in
+//  the file LICENCE.GPL
+//=============================================================================
 
 #ifndef __PED_H__
 #define __PED_H__

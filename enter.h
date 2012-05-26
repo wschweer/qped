@@ -1,10 +1,13 @@
-/***-------------------------------------------------------
- ***  PEd Editor
- ***        KDE - Version
- ***  $Id:$
- ***
- ***  (C) - Copyright Werner Schweer 2005; ws@seh.de
- ***-------------------------------------------------------*/
+//=============================================================================
+//  PEd Editor
+//
+//  Copyright (C) 1997-2011 Werner Schweer
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License version 2
+//  as published by the Free Software Foundation and appearing in
+//  the file LICENCE.GPL
+//=============================================================================
 
 #ifndef __enter_h__
 #define __enter_h__
