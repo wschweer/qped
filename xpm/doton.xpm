@@ -1,0 +1,20 @@
+/* XPM */
+static const char * doton_xpm[] = {
+/* width height num_colors chars_per_pixel */
+"9 10 4 1",
+/* colors */
+" 	c None",
+".	c #008000",
+"X	c green",
+"o	c #c0c0c0",
+/* pixels */
+"   .     ",
+"  ...    ",
+" .X...   ",
+".XX....  ",
+" .X...o  ",
+"  ...ooo ",
+"  o.ooooo",
+"   ooooo ",
+"    ooo  ",
+"     o   "};
