@@ -541,7 +541,7 @@ void Editor::edit(const QChar& c)
 void Editor::update()
       {
    	if (!kll.empty()) {
-            static bool redo = false;
+            // static bool redo = false;
             static bool undo = false;
             static bool vhist = false;
             static bool bhist = false;
@@ -554,7 +554,7 @@ void Editor::update()
             i = (*kll)->redo_ok();
             if (i != undo) {
                   ped->redoAction->setEnabled(i);
-                  redo = i;
+                  // redo = i;
                   }
             i = kll.backhist_ok();
             if (i != bhist) {

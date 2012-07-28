@@ -246,13 +246,6 @@ void Kontext::cmd_put()
       register_update(UPDATE_ALL);
       }
 
-void Kontext::cmd_undelete()
-      {
-printf("cmd_undelete\n");
-      put(delete_buffer);
-      register_update(UPDATE_ALL);
-      }
-
 //---------------------------------------------------------
 //    Kontext::put
 //    inserts a LineList at the cursor position
@@ -382,7 +375,7 @@ void Kontext::delete_line()
             pos.yoffset = 0;
       pos.zeile -= n;
 
-      delete_buffer.write(text, sl, el, mpos1.spalte, mpos2.spalte,
+      pick_buffer.write(text, sl, el, mpos1.spalte, mpos2.spalte,
          mark_mode == MARK_COLUMNS);
 
       f->undo_spos(&pos);           // Startposition f. undo setzen

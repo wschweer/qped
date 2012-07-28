@@ -143,14 +143,14 @@ char* tab_expand(const char* buffer, const char* cur_dir)
       {
       char* s = expand_buffer(buffer);
       char* p = strrchr(s, '/');
-      char* dirname;
+      // char* dirname;
 
       if (p) {
-            dirname = strndup(s, size_t(p - s + 1));
+            // dirname = strndup(s, size_t(p - s + 1));
             ++p;
             }
       else {
-            dirname = strdup(cur_dir);
+            // dirname = strdup(cur_dir);
             p = s;
             }
 

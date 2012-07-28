@@ -98,7 +98,6 @@ class Kontext {
       void del_restline();
       void del_word();
       void cmd_put();
-      void cmd_undelete();
       void rubout();
       void insert_char(const QChar&);
       void put_char(const QChar&);

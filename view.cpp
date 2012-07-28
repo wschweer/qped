@@ -229,7 +229,6 @@ int Kontext::generate_cview(LineList* dst, LineList* src, int zl)
       {
       int view_zl        = 0;
       int clevel         = 0;      // aktueller Kompound-Level
-      int namesp         = 0;
 
       clevel_stack_index = 0;
       LinePos p(src, src->begin(), 0, 0);
@@ -253,7 +252,6 @@ int Kontext::generate_cview(LineList* dst, LineList* src, int zl)
 
             if (p.match("namespace") && clevel == 0) {
                   clevel = -1;
-                  namesp = 1;
                   }
             if (p.match("class")) {
                   add_line(dst, p);

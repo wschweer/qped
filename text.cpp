@@ -65,7 +65,6 @@ Kontext::MtextEditFunction Kontext::mfkt[] = {
       { CMD_DEL_LINE,     F(delete_line),    true},
       { CMD_NEWLINE,      F(newline),        true},
       { CMD_PUT,          F(cmd_put),        true},
-      { CMD_UNDELETE,     F(cmd_undelete),   true},
       { CMD_UNDO,         F(undo),           false},
       { CMD_REDO,         F(redo),           false},
       { CMD_SAVE,         F(save),           false},
@@ -560,7 +559,8 @@ int Kontext::mark_interval(iLineList& sl, iLineList& el)
             if (mpos1.zeile > mpos2.zeile) {
                   Position tmp = mpos1;
                   mpos1 = mpos2;
-                  mpos2 = mpos1;
+                  //mpos2 = mpos1;
+                  mpos2 = tmp;
                   }
 		el = text->line2iLine(mpos2.zeile);
             sl = text->line2iLine(mpos1.zeile);

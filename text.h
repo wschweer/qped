@@ -30,7 +30,6 @@ class Text {
       };
 
 extern Text pick_buffer;
-extern Text delete_buffer;
 
 #define RAND  4
 #define RAND2 8
