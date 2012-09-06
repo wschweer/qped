@@ -20,13 +20,11 @@
 //---------------------------------------------------------
 
 class Line {
-   protected:
       QString txt;
       int _tag;
 
    public:
       Line(const QString& t, int l);
-      Line(const Line&);
       Line(const QString& t);
 
       int size() const   { return txt.size(); }
@@ -63,8 +61,9 @@ class Line {
 class LineList: public std::list<Line> {
       int lines;
       int w;            // breite der bounding box
+
    public:
-      LineList()    { lines = 0; w = 0;}
+      LineList()              { lines = 0; w = 0;}
       ~LineList();
       void clear();
       void updateWidth(int n) { w = n > w ? n : w; }

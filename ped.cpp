@@ -552,7 +552,7 @@ void Ped::expand_c_proc(const QString& txt)
       if (txt == "main") {
             QString s("\n\nint %1(int argc, char* argv[])\n");
             edit_print(s.arg(txt));
-            edit_print("      {\n\n      return 0;\n      }\n");
+            edit_print("      {\n\nreturn 0;\n}\n");
             edit_cmd(CMD_UP);
             }
       else {

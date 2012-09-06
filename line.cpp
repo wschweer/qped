@@ -21,14 +21,9 @@ Line::Line(const QString& t, int l)
       {
       txt = t.left(l);
       }
-Line::Line(const Line&s)
-      {
-      txt = s.txt;
-      _tag = s.tag();
-      }
 Line::Line(const QString& s)
+   : txt(s)
       {
-      txt = s;
       }
 
 //---------------------------------------------------------
