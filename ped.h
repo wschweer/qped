@@ -16,7 +16,7 @@
 #include "file.h"
 #include "editor.h"
 
-#define TABL     6
+const static int TABL = 6;
 
 enum GraphicContext {
       GC_NORMAL,

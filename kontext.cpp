@@ -86,7 +86,7 @@ iKontextList KontextList::at(int i)
 
 KontextListList::~KontextListList()
 	{
-	for (iKontextListList i = begin(); i != end(); ++i)
+	for (auto i = begin(); i != end(); ++i)
 		delete(*i);
 	}
 
@@ -165,9 +165,9 @@ void KontextListList::append_kontext(Kontext* c)
 
 void KontextListList::clear_all()
       {
-      for (iKontextListList cc = begin(); cc != end(); ++cc) {
+      for (auto cc = begin(); cc != end(); ++cc) {
             KontextList* kl = *cc;
-            for (iKontextList i = kl->begin(); i != kl->end(); ++i) {
+            for (auto i = kl->begin(); i != kl->end(); ++i) {
                   delete *i;
                   }
             kl->clear();
@@ -181,6 +181,7 @@ void KontextList::setcur(int n)
       (*_cont)->setOpenflag(false);
       _cont = at(n);
       }
+
 void KontextList::back()
       {
       if (!first_kontext()) {
@@ -188,6 +189,7 @@ void KontextList::back()
             --_cont;
             }
       }
+
 void KontextList::vor()
       {
       if (!last_kontext()) {
@@ -258,5 +260,10 @@ bool Kontext::undo_ok() const
 bool Kontext::redo_ok() const
       {
       return f->redo_ok();
+      }
+
+int Kontext::tabl() const
+      {
+      return f->tabl();
       }
 

@@ -269,7 +269,7 @@ int Kontext::generate_cview(LineList* dst, LineList* src, int zl)
                         view_zl = dst->size() - 1;
                   }
             while (!(*p).isNull()) {
-                  switch ((*p++).toAscii()) {
+                  switch ((*p++).toLatin1()) {
                   	case '\n':
                         	goto nextline;
                         case '{':         // aufgehende Kompound-Klammer
@@ -392,12 +392,13 @@ int Kontext::c_compound()
 void Kontext::cmd_compound()
       {
       int level;
-      switch (f->getFileType()) {
+      switch (f->type()) {
             default:
             case FILE_C:
             case FILE_H:
             case FILE_TEXT:
             case FILE_UNKNOWN:
+            case FILE_QML:
                   level = c_compound();
                   break;
             }
@@ -426,7 +427,7 @@ char* Kontext::findProc(LinePos& p, int line)
 			p.skipline();
                   continue;
                   }
-            switch (c.toAscii()) {
+            switch (c.toLatin1()) {
                   case '{':         // aufgehende Kompound-Klammer
                         ++clevel;
                         break;

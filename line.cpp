@@ -21,6 +21,7 @@ Line::Line(const QString& t, int l)
       {
       txt = t.left(l);
       }
+
 Line::Line(const QString& s)
    : txt(s)
       {
@@ -132,7 +133,7 @@ void Line::delete_word(int col)
 char* Line::cstring() const
       {
       char* p = new char[size()+1];
-      memcpy(p, txt.toAscii().data(), size());
+      memcpy(p, txt.toLatin1().data(), size());
       p[size()] = 0;
       return p;
       }

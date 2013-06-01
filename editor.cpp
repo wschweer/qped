@@ -132,7 +132,7 @@ void Editor::leaveEnterInput(int code, const QString& s)
       {
       if (code == CMD_FUNCTION) {
             ((Kontext*)(*kll))->xposition(0);
-            switch((*kll)->getFile()->getFileType()) {
+            switch((*kll)->getFile()->type()) {
                   case FILE_C:
                         ped->expand_c_proc(s);
                         break;
@@ -415,6 +415,7 @@ int Editor::file(const QString& u, bool flag, Position* pos)
             Ftype("c",   FILE_C),
             Ftype("C",   FILE_C),
             Ftype("h",   FILE_H),
+            Ftype("qml", FILE_QML),
             };
 
       QString suffix = fi.suffix();

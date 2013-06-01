@@ -21,7 +21,7 @@
 
 int xgets(char* buffer, int limit, FILE* f)
       {
-      if (fgets(buffer, limit, f) <= 0) {
+      if (fgets(buffer, limit, f) == 0) {
             if (ferror(f)) {
                   perror("error fgets");
                   }

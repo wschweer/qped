@@ -188,6 +188,7 @@ class Kontext {
       QString path() const;
 
       File* getFile() const  { return f; }
+      int tabl() const;
       void saveAs(const char* name);
       void updateDoc(void*);
       void newline();

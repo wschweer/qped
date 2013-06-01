@@ -27,14 +27,26 @@ FileList files;
 File::File(const QFileInfo& info, FileType t)
       {
       state      = F_VIRGIN;
-      ftype      = FILE_UNKNOWN;
+      _type      = FILE_UNKNOWN;
       mode       = QFile::ReadOwner | QFile::WriteOwner | QFile::ReadGroup | QFile::ReadOther;
       dirty      = false;
       modified   = false;
       _readonly  = true;
-      ftype      = t;
+      _type      = t;
       _fi        = info;
       subscriber = new SubscriberList;
+      }
+
+//---------------------------------------------------------
+//   tabl
+//---------------------------------------------------------
+
+int File::tabl() const
+      {
+      switch(_type) {
+            case FILE_QML:    return 4;
+            default:          return 6;
+            }
       }
 
 //---------------------------------------------------------

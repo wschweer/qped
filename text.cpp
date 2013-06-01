@@ -680,9 +680,10 @@ void Kontext::view_toggle()
       {
       if (view_mode == 0) {
             kollaps_list.clear();
-            switch (f->getFileType()) {
+            switch (f->type()) {
                   case FILE_C:
                   case FILE_H:
+                  case FILE_QML:
                         pos.zeile = generate_cview(&kollaps_list, text,
                            pos.zeile);
                         break;
@@ -949,7 +950,7 @@ static bool is_include(iLine& p)
 
 Link* Kontext::getLink() const
       {
-      int ft = f->getFileType();
+      int ft = f->type();
       if (ft != FILE_C && ft != FILE_H)
             return 0;
 
@@ -1198,7 +1199,7 @@ return 0;
       while (!p.bot()) {
             c = *p;
             --p;
-            switch (c.toAscii()) {
+            switch (c.toLatin1()) {
                   case '\'':        // skip char constants
                         while (!p.bot()) {
                               c = *p;

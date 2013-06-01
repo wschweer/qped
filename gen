@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#qbs config profiles.qt4.Qt.core.binPath /usr/bin
+#qbs config profiles.qt4.Qt.core.incPath /usr/include/qt4
+#qbs config profiles.qt4.Qt.core.libPath /usr/lib/x86_64-linux-gnu
+#qbs config profiles.qt4.Qt.core.mkspecPath /usr/share/qt4/mkspecs/linux-g++
+
+export PATH=/bin:/usr/bin
+export LANG=us
+# qbs -v -v -v -v -v -v -v
+qbs build profile:qt5
+
+
+
+

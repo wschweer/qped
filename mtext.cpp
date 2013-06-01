@@ -125,8 +125,8 @@ void Kontext::newline()
 
       int indent = 0;
       if (auto_indent) {
-            int t = f->getFileType();
-            if (t == FILE_C || t == FILE_H) {
+            int t = f->type();
+            if (t == FILE_C || t == FILE_H || t == FILE_QML) {
                   //
                   // wenn letztes Zeichen von *cursor nicht
                   // '{' ist und die Zeile mit 'if', 'for' etc.
@@ -163,7 +163,7 @@ void Kontext::newline()
                                     }
                               }
                         }
-                  indent *= TABL;
+                  indent *= tabl();
                   }
             else {
                   indent = cursor->getindent(INDENT_C);
@@ -284,7 +284,7 @@ void Kontext::insert_tab()
       f->undo_type(UNDO_CHANGE_LINE);
       f->undo_line(&*cursor);
       f->insert_char(&*cursor, pos.spalte, 9);
-	rxposition(((pos.spalte  + TABL) / TABL) * TABL - pos.spalte);
+	rxposition(((pos.spalte  + tabl()) / tabl()) * tabl() - pos.spalte);
 //      printf("INSERT TAB\n");
       register_update(UPDATE_LINE);
       }
@@ -327,7 +327,7 @@ void Kontext::insert_char(const QChar& c)
             do {
                   f->insert_char(&*cursor, pos.spalte, ' ');
                   rxposition(1);
-                  } while (pos.spalte % TABL);
+                  } while (pos.spalte % tabl());
             }
       else {
             f->insert_char(&*cursor, pos.spalte, c);
@@ -350,7 +350,7 @@ void Kontext::put_char(const QChar& c)
       register_update(UPDATE_LINE);
       f->undo_line(&*cursor);
       if (c == QLatin1Char(0x9)) {
-	      rxposition(((pos.spalte  + TABL) / TABL) * TABL - pos.spalte);
+	      rxposition(((pos.spalte  + tabl()) / tabl()) * tabl() - pos.spalte);
             return;
             }
       cursor->delete_char(pos.spalte);

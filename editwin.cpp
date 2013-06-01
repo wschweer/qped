@@ -65,7 +65,7 @@ void EditWin::paintEvent(QPaintEvent* e)
       cg -= cg/8;
       const QColor mc(cr, cg, cb);
 
-      bool cFile    = k->getFile()->getFileType() == FILE_C;
+      bool cFile    = k->getFile()->type() == FILE_C;
 //      bool colorify = cFile && ped->getColorify();
       bool colorP   = (k->getMarkMode() == MARK_NONE) && cFile && ped->getParen();
 

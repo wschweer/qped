@@ -124,7 +124,7 @@ class iLine {
       friend bool operator==(iLine& ln, const char* txt);
       bool eol();
       const char* txt() const {
-            return l->txt.toAscii().data() + p;
+            return l->txt.toLatin1().data() + p;
             }
       bool match(const char*) const;
       };

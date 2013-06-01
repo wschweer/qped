@@ -9,6 +9,7 @@
 //  the file LICENCE.GPL
 //=============================================================================
 
+#include <unistd.h>
 #include "ped.h"
 #include "utils.h"
 #include "text.h"

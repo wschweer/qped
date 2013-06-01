@@ -18,7 +18,7 @@ class Editor;
 class SubscriberList;
 
 enum FileType {FILE_UNKNOWN, FILE_TEXT, FILE_GRAFIK, FILE_C,
-   FILE_MAN, FILE_H, FILE_HTML};
+   FILE_MAN, FILE_H, FILE_HTML, FILE_QML};
 
 // KONTEXT_LINES must be less than (window_height / 2) - 1
 
@@ -94,7 +94,7 @@ class File {
       enum FileState state;
       bool modified;
       SubscriberList* subscriber;
-      FileType ftype;
+      FileType _type;
       char* construct_name(const char*);
       bool dirty;
       bool _readonly;
@@ -112,7 +112,7 @@ class File {
       bool readonly() const        { return _readonly; }
       void setReadonly(bool flag)  { _readonly = flag; }
 
-      FileType getFileType() const { return ftype; }
+      FileType type() const        { return _type; }
 
       void subscribe(Kontext*);
 	int unsubscribe(Kontext*);
@@ -159,6 +159,7 @@ class File {
          const char*);
       void setDirty() { dirty = true; }
       void setModified() { modified = true; }
+      int tabl() const;
       };
 
 //---------------------------------------------------------
