@@ -19,7 +19,7 @@ INCLUDE(${QT_USE_FILE})
 
 QT_WRAP_CPP(qped moc ped.h editor.h enter.h editwin.h)
 
-set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall -Wextra -fno-exceptions -include ${PROJECT_SOURCE_DIR}/all.h")
+set(CMAKE_CXX_FLAGS "-std=c++11 -g -flto -fuse-linker-plugin -O3 -Wall -Wextra -fno-exceptions -include ${PROJECT_SOURCE_DIR}/all.h")
 
 ADD_EXECUTABLE(qped
       ${moc}

@@ -13,7 +13,6 @@
 #include "ped.h"
 #include "cmd.h"
 #include "text.h"
-#include "config.h"
 
 //---------------------------------------------------------
 //   EditWin
@@ -66,7 +65,6 @@ void EditWin::paintEvent(QPaintEvent* e)
       const QColor mc(cr, cg, cb);
 
       bool cFile    = k->getFile()->type() == FILE_C;
-//      bool colorify = cFile && ped->getColorify();
       bool colorP   = (k->getMarkMode() == MARK_NONE) && cFile && ped->getParen();
 
       for (int i = start; i < end; ++i) {
@@ -99,70 +97,18 @@ void EditWin::paintEvent(QPaintEvent* e)
             iLine il  = k->sl(&*l);
             int x2    = spalten();
             int y     = baseline(i);    // pixelposition
-#if 0
-            int sp;
-            QChar* dst;
-            QChar buffer[x2 + 1];
-            if (colorify) {
-                  sp = 0;
-                  while (sp < x2 && *il != QChar::Null) {
-                        dst = buffer;
-                        // wortanfang suchen
-                        int start = sp;
-                        for (; sp < x2; ++sp) {
-                              QChar c = *il;
-                              if (c == QChar::Null || !is_delim(c))
-                                    break;
-                              *dst++ = c;
-                              ++il;
-                              }
-                        if (dst != buffer) {
-                              *dst = 0;
-                              p.drawText(start * fw + RAND, y, buffer);
-                              }
-                        int n = is_keyword(il.txt());
-                        if (n) {
-                              p.setPen(Qt::blue);
-                              QString s(il.txt());
-                              p.drawText(sp * fw + RAND, y, s.left(n));
-                              p.setPen(fgColor);
-                              il += n;
-                              sp += n;
-                              }
-                        else {
-                              // wortende suchen
-                              dst = buffer;
-                              start = sp;
-                              for (; sp < x2; ++sp) {
-                                    char c = *il;
-                                    if (c == 0 || is_delim(c))
-                                          break;
-                                    *dst++ = c;
-                                    ++il;
-                                    }
-                              if (dst != buffer) {
-                                    *dst = 0;
-                                    p.drawText(start * fw + RAND, y, buffer);
-                                    }
-                              }
-                        }
-                  }
-            else
-#endif
-                  {
-                  QString s;
-                  for (int sp = 0; sp < x2; ++sp) {
-                        QChar c(*il++);
-                        if (c.isHighSurrogate()) {
-                              s.append(c);
-                              c = *il++;
-                              }
-                        if (c == QChar::Null)
-                              break;
+            QString s;
+            for (int sp = 0; sp < x2; ++sp) {
+                  QChar c(*il++);
+                  if (c.isHighSurrogate()) {
                         s.append(c);
+                        c = *il++;
                         }
-                  p.drawText(RAND, y, s);
+                  if (c == QChar::Null)
+                        break;
+                  s.append(c);
                   }
+            p.drawText(RAND, y, s);
             ++l;
             }
 

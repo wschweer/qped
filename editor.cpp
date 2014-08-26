@@ -17,7 +17,6 @@
 #include "text.h"
 #include "xml.h"
 #include "line.h"
-#include "config.h"
 #include "editwin.h"
 
 //---------------------------------------------------------

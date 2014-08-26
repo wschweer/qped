@@ -31,6 +31,8 @@ extern char* cur_dir;         // current working directory
 
 extern bool isoLatin;
 extern bool utf8;
+extern QColor bgColor;
+extern QColor fgColor;
 
 #define UPDATE_ALL      0x01
 #define UPDATE_LINE     0x02

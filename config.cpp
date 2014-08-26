@@ -9,7 +9,6 @@
 //  the file LICENCE.GPL
 //=============================================================================
 
-#include "config.h"
 #include "ped.h"
 #include "xml.h"
 #include "editwin.h"
@@ -68,7 +67,6 @@ void Ped::configFont()
 
 void Ped::saveConfig()
       {
-printf("save config\n");
       QString fname(QDir::homePath() + "/" + configFilename);
       QFile f(fname);
       if (!f.open(QIODevice::WriteOnly)) {
@@ -89,7 +87,6 @@ printf("save config\n");
       xml.intTag("fontSize", fontSize);
 
       xml.etag("PedConfig");
-      f.close();
       msg(5000, QString("configuration saved in \"%1\"").arg(f.fileName()));
       }
 

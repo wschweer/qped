@@ -24,7 +24,6 @@ Application {
             "view.cpp",
             "xml.cpp",
             "cmd.h",
-            "config.h",
             "editwin.h",
             "enter.h",
             "file.h",

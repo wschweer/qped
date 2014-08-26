@@ -17,7 +17,6 @@
 #include "cmd.h"
 #include "tree.h"
 #include "xml.h"
-#include "config.h"
 #include "editwin.h"
 
 #include "filesave.xpm"
@@ -32,50 +31,6 @@ bool debug_flag    = false;
 bool changeInPlace = false;
 
 static char* pedName;
-
-static const char* fileOpenText = "Click this button to open a new file.\n\n"
-      "You can also select the Open command from the File menu.";
-static const char* fileSaveText = "Click this button to save all the files you are "
-      "editing.\n\n"
-      "You can also select the Save command from the File menu\n"
-      "to save the current file.";
-static const char* undoText = "Dieser Button macht die letzte Änderung des "
-      "Textes rückgängig.\n"
-      "Es können beliebig viele Bearbeitungsschritte rückgängig\n"
-      "gemacht werden.\n\n"
-      "Abkürzung: F4";
-static const char* redoText = "Dieser Button macht die letzten "
-      "Undo - Aktionen\n"
-      "rückgängig.\n\n"
-      "Abkürzung: Shift-F4";
-static const char* histbText = "Gehe zurück zum letzten Dokument\n"
-      "(F2)";
-static const char* histvText = "Gehe vor zum nächsten Dokument\n"
-      "(Shift-F2)";
-static const char* searchvText = "Suche vorwärts mit aktueller R.E.\n"
-      "Pattern mit (Enter R.E. F7) eingeben\n"
-      "(F7)";
-static const char* searchbText = "Suche rückwärts mit aktueller R.E.\n"
-      "Pattern mit (Enter R.E. Shift-F7) eingeben\n"
-      "(Shift-F7)";
-static const char* markzText = "Schaltet in den Zeilen-Markiermodus\n"
-      "(F5)";
-static const char* marksText = "Schaltet in den Spalten-Markiermodus\n"
-      "(F6)";
-static const char* macropText = "wiederholt eine vorher aufgezeichnete\n"
-      "Eingabesequence\n"
-      "(F10)";
-static const char* macrorText = "startet die Aufnahme aller nachfolgenden\n"
-      "Eingaben. Die Aufnahme wird durch Drücken der Play-Taste\n"
-      "oder der Record-Taste gestoppt.\n"
-      "(Shift-F10)";
-static const char* shTreeText = "splittet das Text-Fenster und zeigt in der\n"
-      "linken Hälfte einen Baum der, mit den Kopftabs umschaltbar,\n"
-      "diverse Informationen zeigen kann";
-static const char* splithText = "splittet das Text-Fenster horizontal;\n"
-      "bei nochmaliger Betätigung wird der Split wieder aufgehoben";
-static const char* splitvText = "splittet das Text-Fenster vertikal;\n"
-      "bei nochmaliger Betätigung wird der Split wieder aufgehoben";
 
 //---------------------------------------------------------
 //   printVersion
@@ -111,70 +66,55 @@ void Ped::genFileToolbar()
       QToolBar* tools = new QToolBar("File Buttons");
 
       QAction* a = tools->addAction(openIcon, "Open File");
-      a->setWhatsThis(fileOpenText);
       connect(a, SIGNAL(triggered()), SLOT(load()));
 
       a = tools->addAction(saveIcon, "Save all Files");
-      a->setWhatsThis(fileSaveText);
       connect(a, SIGNAL(triggered()), SLOT(saveAll()));
       tools->addSeparator();
 
       undoAction = tools->addAction(undoIcon, "Undo");
-      undoAction->setWhatsThis(undoText);
       undoAction->setEnabled(false);
       connect(undoAction, SIGNAL(triggered()), SLOT(undo()));
 
       redoAction = tools->addAction(redoIcon, "Redo");
-      redoAction->setWhatsThis(redoText);
       redoAction->setEnabled(false);
       connect(redoAction, SIGNAL(triggered()), SLOT(redo()));
 
       histBAction = tools->addAction(histBIcon,"Back");
-      histBAction->setWhatsThis(histbText);
       histBAction->setEnabled(false);
       connect(histBAction, SIGNAL(triggered()), SLOT(histb()));
 
       histVAction = tools->addAction(histVIcon,"Forward");
-      histVAction->setWhatsThis(histvText);
       histVAction->setEnabled(false);
       connect(histVAction, SIGNAL(triggered()), SLOT(histv()));
 
       a = tools->addAction(searchVIcon, "Search forwards");
-      a->setWhatsThis(searchvText);
       connect(a, SIGNAL(triggered()), SLOT(searchForward()));
 
       a = tools->addAction(searchBIcon, "Search backwards");
-      a->setWhatsThis(searchbText);
       connect(a, SIGNAL(triggered()), SLOT(searchBack()));
 
       a = tools->addAction(markzIcon, "mark lines");
-      a->setWhatsThis(markzText);
       connect(a, SIGNAL(triggered()), SLOT(markLines()));
 
       a = tools->addAction(marksIcon, "mark columns");
-      a->setWhatsThis(marksText);
       connect(a, SIGNAL(triggered()), SLOT(markColumns()));
 
       a = tools->addAction(splithIcon, "split window horizontal");
-      a->setWhatsThis(splithText);
       connect(a, SIGNAL(triggered()), SLOT(splitHorizontal()));
 
       a = tools->addAction(splitvIcon, "split window vertical");
-      a->setWhatsThis(splitvText);
       connect(a, SIGNAL(triggered()), SLOT(splitVertical()));
 
       a = tools->addAction(toggleTreeIcon, "show/hide tree");
-      a->setWhatsThis(shTreeText);
       connect(a, SIGNAL(triggered()), SLOT(toggleTree()));
 
       tools->addSeparator();
 
       a = tools->addAction(macroPIcon, "play recorded macro");
-      a->setWhatsThis(macropText);
       connect(a, SIGNAL(triggered()), SLOT(playMacro()));
 
       a = tools->addAction(macroRIcon, "record macro");
-      a->setWhatsThis(macrorText);
       connect(a, SIGNAL(triggered()), SLOT(recordMacro()));
 
       tools->addSeparator();
@@ -220,26 +160,6 @@ void Ped::genPopupMenu()
       controls->addAction("Font", this, SLOT(configFont()));
       controls->addSeparator();
       controls->addAction("Save Configuration", this, SLOT(saveConfig()));
-
-      //---------------------------------------------------
-      //    generate Go Pulldown
-      //---------------------------------------------------
-
-      goPd = new QMenu("Go");
-      mb->addMenu(goPd);
-      connect(goPd, SIGNAL(aboutToShow()), this, SLOT(goMenue()));
-      connect(goPd, SIGNAL(triggered(QAction*)),this, SLOT(goSelect(QAction*)));
-
-      //---------------------------------------------------
-      //    generate Help Pulldown
-      //---------------------------------------------------
-
-      mb->addSeparator();
-      helpPd = new QMenu("Help");
-      mb->addMenu(helpPd);
-      helpPd->addAction("About", this, SLOT(helpAbout()));
-      helpPd->addAction("Commands", this, SLOT(helpCommands()));
-      helpPd->addAction("Qt-2", this, SLOT(helpQt()));
       }
 
 //---------------------------------------------------------
@@ -1112,6 +1032,7 @@ int main(int argc, char**argv)
       {
       int c;
       pedName = argv[0];
+
       while ((c = getopt(argc, argv, "vlui")) != EOF) {
             switch (c) {
                   case 'v':
@@ -1157,5 +1078,4 @@ void Ped::open_kontext()         { cur_editor->open_kontext(); }
 void Ped::update()               { cur_editor->update();       }
 void Ped::goto_kontext(int i)    { cur_editor->gotoKontext(i); }
 void Ped::edit(const QChar& cmd) { cur_editor->edit(cmd);      }
-
 
