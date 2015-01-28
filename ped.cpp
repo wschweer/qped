@@ -802,7 +802,7 @@ bool Ped::loadStatus(bool load_files)
       QString err;
 
       if (!doc.setContent(&qf, false, &err, &line, &column)) {
-            printf("error reading file .qped at line %d column %d: %s\n",
+            fprintf(stderr, "error reading file .qped at line %d column %d: %s\n",
                line, column, err.toLatin1().data());
             return false;
             }
@@ -920,6 +920,10 @@ void Ped::rec_cmd(int cmd, const char* param)
 
 void Ped::edit_print(const QString& s)
       {
+      Kontext* k = *(cur_editor->kll);
+
+      bool savedAI = k->auto_indent;
+      k->auto_indent = false;
       for (int i = 0; i < s.size(); ++i) {
             QChar c = s[i];
             if (c == QLatin1Char('\n'))
@@ -927,6 +931,7 @@ void Ped::edit_print(const QString& s)
             else
                   edit(c);
             }
+      k->auto_indent = savedAI;
       }
 
 //---------------------------------------------------------

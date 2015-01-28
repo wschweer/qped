@@ -107,7 +107,7 @@ void Kontext::editChar(const QChar& c)
 bool Kontext::edit(int cmd, const QString& param)
       {
       bool auto_indent_save = auto_indent;
-      auto_indent = true;
+//      auto_indent = true;         // why?
 
       for (const TextEditFunction* fk = fkt; fk->cmd; ++fk) {
             if (fk->cmd == cmd) {
