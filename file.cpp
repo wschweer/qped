@@ -64,9 +64,8 @@ File::~File()
 
 FileList::~FileList()
       {
-      for (FileList::iterator i = begin(); i != end(); ++i) {
+      for (auto i = begin(); i != end(); ++i)
             delete *i;
-            }
       clear();
       }
 
@@ -76,7 +75,7 @@ FileList::~FileList()
 
 void FileList::saveall()
       {
-      for (iFileList i = begin(); i != end(); ++i)
+      for (auto i = begin(); i != end(); ++i)
             (*i)->save(0);
       }
 
@@ -86,7 +85,7 @@ void FileList::saveall()
 
 File* FileList::find(QFileInfo fi) const
       {
-      for (ciFileList i = begin(); i != end(); ++i) {
+      for (auto i = begin(); i != end(); ++i) {
             if ((*i)->fi() == fi)
                   return *i;
             }

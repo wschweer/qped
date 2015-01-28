@@ -24,18 +24,18 @@ class EnterEdit : public QLineEdit {
       Q_OBJECT
 
       Ped* ped;
-      int enter_head;
+      int enter_head    { 0 };
       int enter_tail;
-      int enter_n;
-      int enter_max;
+      int enter_n       { 0 };
+      int enter_max     { 0 };
       QString enter_stack[ENTER_SIZE];
-      QString enter_up();
-      QString enter_down();
-      void push();
 
-      virtual bool event(QEvent* event);
+//      virtual bool event(QEvent* event);
 
    public:
+      void push();
+      QString enter_up();
+      QString enter_down();
       EnterEdit(QWidget*, Ped*);
       };
 

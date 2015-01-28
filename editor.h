@@ -53,6 +53,7 @@ class Editor : public QWidget {
       int editStackId;
       int o_xvisible, o_xtotal, o_xpos;
       int o_yvisible, o_ytotal, o_ypos;
+      bool _startupMode { false };
       Q_OBJECT
 
    public slots:
@@ -91,6 +92,7 @@ class Editor : public QWidget {
       void removeStack(QWidget* w);
       void raiseStack(int id);
       void setEditorFont(const QFont&);
+      void setStartupMode(bool val) { _startupMode = val; }
       };
 
 #endif

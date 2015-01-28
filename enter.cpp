@@ -22,9 +22,6 @@ EnterEdit::EnterEdit(QWidget* parent, Ped* p)
    : QLineEdit(parent)
       {
       ped = p;
-      enter_head = 0;
-      enter_n = 0;
-      enter_max = 0;
       }
 
 //---------------------------------------------------------
@@ -66,10 +63,10 @@ QString EnterEdit::enter_down()
 
 void EnterEdit::push()
       {
-      QString input(text());
-      if (input.isEmpty())
+      if (text().isEmpty()) {
             return;
-	enter_stack[enter_head++] = input;
+            }
+	enter_stack[enter_head++] = text();
       enter_head %= ENTER_SIZE;
       if (enter_n < ENTER_SIZE)
             ++enter_n;
@@ -82,6 +79,7 @@ void EnterEdit::push()
 //    be used
 //---------------------------------------------------------
 
+#if 0
 bool EnterEdit::event(QEvent* event)
       {
       if (event->type() != QEvent::KeyPress)
@@ -145,6 +143,7 @@ bool EnterEdit::event(QEvent* event)
 //                        break;
 
                   case Qt::Key_F7:
+                        printf("    f7\n");
                         cmd = CMD_SEARCH_F;
                         break;
 
@@ -179,4 +178,4 @@ bool EnterEdit::event(QEvent* event)
             }
       return false;
       }
-
+#endif

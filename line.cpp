@@ -770,12 +770,11 @@ void LineList::write(QTextStream& f)
             //
             // remove trailing space
             //
-            QString s(l->text());
-            int n = s.size();
-            while (n && s[n - 1].isSpace())
+            int n = l->text().size();
+            while (n && l->text()[n - 1].isSpace())
                   n--;
             if (n)
-                  f << s.left(n) << '\n';
+                  f << l->text().left(n) << '\n';
             else
                   f << '\n';
             }

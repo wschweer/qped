@@ -396,8 +396,10 @@ Ped::Ped(int argc, char** argv)
       cur_dir = *start_dir;
       bool load_last_files = argc == 0;
 
+      cur_editor->setStartupMode(true);
       for (int i = 0; i < argc; i++)
             edit_cmd(CMD_NEW_ALTFIL, argv[i]);
+      cur_editor->setStartupMode(false);
 
       geometry_x = 0;
       geometry_y = 0;
@@ -418,9 +420,8 @@ Ped::Ped(int argc, char** argv)
       pa->setChecked(paren);
 
       editor1->open_kontext();
-      if (editor2) {
+      if (editor2)
             editor2->open_kontext();
-            }
       cur_editor->win->setFocus();
       }
 
@@ -521,6 +522,7 @@ void Ped::leaveEnterInput(int code)
       {
       if (enterActive) {
             enterActive = false;
+            enterLine->push();
             cur_editor->leaveEnterInput(code, enterLine->text());
             enter->hide();
             }
@@ -973,9 +975,17 @@ void  Ped::edit_cmd(int cmd, const char* param)
                         // enterLine->cursorWordForward(false);
                         leaveEnterInput(CMD_FUNCTION);
                         break;
-                  case CMD_UP:
+                  case CMD_UP: {
+                        QString s(enterLine->enter_up());
+                        if (!s.isEmpty())
+                              enterLine->setText(s);
+                        }
                         break;
-                  case CMD_DOWN:
+                  case CMD_DOWN: {
+                        QString s(enterLine->enter_down());
+                        if (!s.isEmpty())
+                              enterLine->setText(s);
+                        }
                         break;
                   }
             return;
