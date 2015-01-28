@@ -273,7 +273,8 @@ void  Editor::edit_cmd(int cmd, QString s)
       {
       int rv = 0;
       if (cmd == CMD_NEW_ALTFIL) {
-            QString url(urlGen(ped->getCurDir(), s));
+//            QString url(urlGen(ped->getCurDir(), s));
+            QString url(urlGen(QDir::currentPath(), s));
             rv = file(url, false, 0);
             if (rv == 0)
                   open_kontext();

@@ -57,7 +57,7 @@ QString EnterEdit::enter_down()
             enter_head %= ENTER_SIZE;
             return enter_stack[enter_head];
             }
-      return QString("");
+      return QString();
       }
 
 //---------------------------------------------------------

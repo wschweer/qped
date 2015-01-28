@@ -773,6 +773,7 @@ void Ped::saveStatus()
       //----------------------------------------------
 
       xml.strTag("search", searchPattern.pattern());
+      xml.strTag("replace", replace);
       xml.intTag("colorify", colorify);
       xml.intTag("brackets", paren);
 
@@ -823,6 +824,8 @@ bool Ped::loadStatus(bool load_files)
                         int i = val.toInt();
                         if (tag == "search")
                               searchPattern.setPattern(val);
+                        else if (tag == "replace")
+                              replace = val;
                         else if (tag == "colorify")
                               colorify = i;
                         else if (tag == "brackets")
