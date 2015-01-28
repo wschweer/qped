@@ -403,8 +403,8 @@ Ped::Ped(int argc, char** argv)
 
       geometry_x = 0;
       geometry_y = 0;
-      geometry_w = 800;
-      geometry_h = 1000;
+      geometry_w = 900;
+      geometry_h = 1410;
 
       if (!loadStatus(load_last_files)) {
             if (load_last_files) {
