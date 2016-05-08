@@ -70,7 +70,7 @@ class Ped : public QMainWindow
       {
       QString fontFamily;
       int fontWeight;
-      int fontSize;
+      qreal fontSize;
 
       int tree_width;
       int last_cmd;
@@ -218,6 +218,7 @@ class Ped : public QMainWindow
       void loadManPage(const char* url, bool flag);
       void expand_c_proc(const QString&);
       void expand_h_proc(const QString&);
+      void setFont();
       };
 
 #endif

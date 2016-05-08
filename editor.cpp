@@ -35,7 +35,7 @@ void Editor::removeKontext(int idx)
 //   Editor
 //---------------------------------------------------------
 
-Editor::Editor(QWidget* parent, Ped* p, const QFont& efont)
+Editor::Editor(QWidget* parent, Ped* p)
    : QWidget(parent)
       {
       o_xvisible = o_xtotal = o_xpos = -1;
@@ -60,7 +60,7 @@ Editor::Editor(QWidget* parent, Ped* p, const QFont& efont)
       hScroll = new QScrollBar(Qt::Horizontal, eframe);
       vScroll = new QScrollBar(Qt::Vertical, eframe);
       win     = new EditWin(eframe, ped, this);
-      win->setFont(efont);
+      win->setFont(p->eefont);
 
       grid->addWidget(win, 0, 0);
       grid->addWidget(vScroll, 0, 1);
@@ -75,53 +75,6 @@ Editor::Editor(QWidget* parent, Ped* p, const QFont& efont)
       connect(vScroll, SIGNAL(valueChanged(int)),  this, SLOT(vScrollTo(int)));
       addStack(eframe);
       }
-
-//---------------------------------------------------------
-//   is_delim
-//---------------------------------------------------------
-
-#if 0
-static bool is_delim(QChar c)
-      {
-      switch (c.toAscii()) {
-            case ' ':
-            case ';':
-            case ':':
-            case '*':
-            case '(':
-            case ')':
-            case ',':
-                  return true;
-            default:
-                  return false;
-            }
-      }
-#endif
-
-//---------------------------------------------------------
-//   is_keyword
-//---------------------------------------------------------
-
-#if 0
-static int is_keyword(const char* s)
-      {
-      char* keywords[] = {
-            "for", "while", "do", "if", "else", "switch",
-            "const", "int", "long", "short", "char", "bool",
-            "true", "false", "class", "struct", "case", "default", "void",
-            "double", "float", "new", "delete", "return",
-            "typedef", "static", "enum", "break", "extern", "continue",
-            "throw", "catch", "try", "unsigned", "signed", "inline",
-            "mutable",
-            0};
-      for (char** p = keywords; *p; ++p) {
-            int n = strlen(*p);
-            if (::strncmp(s, *p, n) == 0 && is_delim(*(s+n)))
-                  return n;
-            }
-      return 0;
-      }
-#endif
 
 //---------------------------------------------------------
 //   leaveEnterInput
@@ -670,4 +623,12 @@ void Editor::vScrollTo(int val)
       win->update();
       }
 
+//---------------------------------------------------------
+//   fontChanged
+//---------------------------------------------------------
+
+void Editor::fontChanged()
+      {
+      win->setFont(ped->eefont);
+      }
 

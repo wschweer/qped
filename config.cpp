@@ -51,13 +51,14 @@ void Ped::configFont()
       {
       QFont old_font = cur_editor->win->font();
       bool flag;
-      QFont font = QFontDialog::getFont(&flag, old_font);
+      QFont font = QFontDialog::getFont(&flag, old_font, 0, "select font", QFontDialog::MonospacedFonts);
       if (flag) {
             fontFamily = font.family();
             fontWeight = font.weight();
-            fontSize   = font.pointSize();
-            cur_editor->setEditorFont(font);
-            cur_editor->update();
+            fontSize   = font.pointSizeF();
+            setFont();
+//            cur_editor->setEditorFont(font);
+//            cur_editor->update();
             }
       }
 
@@ -84,7 +85,8 @@ void Ped::saveConfig()
       xml.intTag("colorify", colorify);
       xml.intTag("paren", paren);
       xml.strTag("fontFamily", fontFamily);
-      xml.intTag("fontSize", fontSize);
+      xml.doubleTag("fontSize", fontSize);
+      xml.intTag("fontWeight", fontWeight);
 
       xml.etag("PedConfig");
       msg(5000, QString("configuration saved in \"%1\"").arg(f.fileName()));
@@ -99,6 +101,7 @@ void Ped::readConfig()
       QString fname(QDir::homePath() + "/" + configFilename);
       QFile f(fname);
       if (!f.open(QIODevice::ReadOnly)) {
+	    printf("====readConfig failed\n");
             saveConfig();
 //            msg(5000, QString("read config failed: cannot open <%1>: <%2>\n")
 //               .arg(f.fileName()).arg(strerror(errno)));
@@ -107,6 +110,9 @@ void Ped::readConfig()
       QDomDocument doc;
       int line, column;
       QString err;
+
+      fontWeight = 50;
+      fontSize   = 18;
 
       if (!doc.setContent(&f, false, &err, &line, &column)) {
             printf("error reading file <%s> at line %d column %d: %s\n",
@@ -146,9 +152,11 @@ void Ped::readConfig()
                   else if (tag == "paren")
                         ;
                   else if (tag == "fontFamily")
-                        ;
+                        fontFamily = e.text();
                   else if (tag == "fontSize")
-                        ;
+                        fontSize = e.text().toDouble();
+                  else if (tag == "fontWeight")
+                        fontWeight = e.text().toInt();
                   else
                         domError(nnode);
                   }

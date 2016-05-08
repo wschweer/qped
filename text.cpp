@@ -1495,12 +1495,12 @@ void Kontext::about()
             else
                   snprintf(p, n, "%s%s", word, proc ? "()" : "");
             }
-      int fw = editor->win->fontMetrics().width('x');
+      int fw = editor->win->fontMetrics().averageCharWidth();
 
       int x = editor->win->xoffset() + fw * (pos.spalte-pos.xoffset);
       int y = editor->win->baseline(pos.yoffset);
       QPoint r = editor->win->mapToGlobal(QPoint(x, y));
-      int w = editor->win->fontMetrics().width('x') * strlen(buffer) + 5;
+      int w = editor->win->fontMetrics().averageCharWidth() * strlen(buffer) + 5;
 
       ped->aboutItem = new QFrame(editor->win);
       QLabel* l = new QLabel(buffer, ped->aboutItem);

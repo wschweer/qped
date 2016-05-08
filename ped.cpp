@@ -285,20 +285,7 @@ Ped::Ped(int argc, char** argv)
       saveIcon       = QPixmap(filesave);
 
       readConfig();
-
-      fontFamily = "fixed";
-      fontWeight = 50;
-      fontSize   = 12;
-#ifdef Q_WS_MAC
-      eefont = QFont("Courier");
-      eefont.setPixelSize(18);
-      eefont.setLetterSpacing(QFont::AbsoluteSpacing, qreal(.2));
-#else
-      eefont = QFont("10x20");
-      eefont.setRawMode(true);
-      eefont.setFixedPitch(true);
-      eefont.setStyleStrategy(QFont::PreferBitmap);
-#endif
+      setFont();
 
       genFileToolbar();
       genPopupMenu();
@@ -330,7 +317,7 @@ Ped::Ped(int argc, char** argv)
       tsplitter = new QSplitter(box);
       splitter  = new QSplitter(tsplitter);
       splitter->setOpaqueResize(true);
-      editor1   = new Editor(splitter, this, eefont);
+      editor1   = new Editor(splitter, this);
       editor2   = 0;
       cur_editor = editor1;
       grid->addWidget(tsplitter, 200);
@@ -403,7 +390,7 @@ Ped::Ped(int argc, char** argv)
 
       geometry_x = 0;
       geometry_y = 0;
-      geometry_w = 900;
+      geometry_w = 1200;
       geometry_h = 1410;
 
       if (!loadStatus(load_last_files)) {
@@ -423,6 +410,20 @@ Ped::Ped(int argc, char** argv)
       if (editor2)
             editor2->open_kontext();
       cur_editor->win->setFocus();
+      }
+
+//---------------------------------------------------------
+//   setFont
+//---------------------------------------------------------
+
+void Ped::setFont()
+      {
+      eefont = QFont(fontFamily);
+      eefont.setPointSizeF(fontSize);
+      eefont.setWeight(fontWeight);
+      eefont.setFixedPitch(true);
+//      if (curEditor)
+//            curEditor->fontChanged();
       }
 
 //---------------------------------------------------------
@@ -692,7 +693,7 @@ void Ped::splitVertical()
       int orientation = splitter->orientation();
       splitter->setOrientation(Qt::Horizontal);
       if (editor2 == 0) {
-            editor2  = new Editor(splitter, this, eefont);
+            editor2  = new Editor(splitter, this);
             cur_editor = editor2;
             load((*(editor1->kll))->path());
             editor2->show();
@@ -715,7 +716,7 @@ void Ped::splitHorizontal()
       int orientation = splitter->orientation();
       splitter->setOrientation(Qt::Vertical);
       if (editor2 == 0) {
-            editor2  = new Editor(splitter, this, eefont);
+            editor2  = new Editor(splitter, this);
             cur_editor = editor2;
             load((*(editor1->kll))->path());
             editor2->show();
@@ -843,7 +844,7 @@ bool Ped::loadStatus(bool load_files)
                         else if (tag == "Editor1")
                               editor1->loadStatus(eee, load_files);
                         else if (tag == "Editor2") {
-                              editor2 = new Editor(splitter, this, eefont);
+                              editor2 = new Editor(splitter, this);
                               editor2->loadStatus(eee, load_files);
                               }
                         else if (tag == "CurEditor")

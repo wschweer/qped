@@ -295,15 +295,15 @@ void EditWin::focusInEvent(QFocusEvent*)
 
 int EditWin::zeilen() const
       {
-      return (height() - RAND2) / fontMetrics().height();
+      return (height() - RAND2) / fh;
       }
 int EditWin::spalten() const
       {
-      return (width() - RAND2) / fontMetrics().width('x');
+      return (width() - RAND2) / fw;
       }
 int EditWin::yoffset() const
       {
-      return (RAND + fontMetrics().ascent());
+      return (RAND + fa);
       }
 int EditWin::xoffset() const
       {
@@ -316,8 +316,8 @@ int EditWin::xoffset() const
 
 void EditWin::pos2xy(int x, int y, int* z, int* s) const
       {
-      *z = (y - yoffset() + fontMetrics().ascent()) / fontMetrics().height();
-      *s = (x - xoffset()) / fontMetrics().width('x');
+      *z = (y - yoffset() + fa) / fh;
+      *s = (x - xoffset()) / fw;
       }
 
 //---------------------------------------------------------
@@ -326,7 +326,18 @@ void EditWin::pos2xy(int x, int y, int* z, int* s) const
 
 int EditWin::baseline(int y) const
       {
-      return y * fontMetrics().height() + RAND + fontMetrics().ascent();
+      return y * fh + RAND + fa;
       }
 
+//---------------------------------------------------------
+//   fontChanged
+//---------------------------------------------------------
+
+void EditWin::fontChanged()
+      {
+      QFontMetrics fm(ped->eefont);
+      fw = fm.averageCharWidth();
+      fh = fm.height();
+      fa = fm.ascent();
+      }
 

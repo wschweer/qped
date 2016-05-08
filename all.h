@@ -19,7 +19,7 @@
 #include <locale.h>
 #include <map>
 
-#include <QFrame>
+#include <QtWidgets/QFrame>
 #include <QMouseEvent>
 #include <QShortcut>
 #include <QStackedWidget>

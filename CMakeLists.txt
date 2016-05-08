@@ -9,17 +9,18 @@
 ##  the file LICENCE.GPL
 ##=============================================================================
 
-project (qped)
 cmake_minimum_required(VERSION 2.8)
-#set(CMAKE_BUILD_TYPE Debug)
+project (qped)
 
-set(QT_USE_QTXML TRUE)
-find_package(Qt4)
-INCLUDE(${QT_USE_FILE})
+set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
-QT_WRAP_CPP(qped moc ped.h editor.h enter.h editwin.h)
+find_package(Qt5 COMPONENTS Widgets Xml)
 
-set(CMAKE_CXX_FLAGS "-std=c++11 -g -flto -fuse-linker-plugin -O3 -Wall -Wextra -fno-exceptions -include ${PROJECT_SOURCE_DIR}/all.h")
+QT5_WRAP_CPP(qped moc ped.h editor.h enter.h editwin.h)
+set(CMAKE_AUTOMOC ON)
+
+set(CMAKE_CXX_FLAGS  "-std=c++11 -Wall -fno-exceptions -include ${PROJECT_SOURCE_DIR}/all.h")
 
 ADD_EXECUTABLE(qped
       ${moc}
@@ -28,9 +29,9 @@ ADD_EXECUTABLE(qped
       utils.cpp view.cpp kontext.cpp xml.cpp config.cpp editwin.cpp
       )
 
-TARGET_LINK_LIBRARIES(qped
-      ${QT_LIBRARIES}
-      )
+qt5_use_modules(qped Widgets Xml)
+
+TARGET_LINK_LIBRARIES(qped ${QT_LIBRARIES})
 
 install_targets ( /bin qped )
 

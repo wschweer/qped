@@ -68,7 +68,7 @@ class Editor : public QWidget {
       EditWin* win;
       KontextListList kll;
 
-      Editor(QWidget* parent, Ped*, const QFont&);
+      Editor(QWidget* parent, Ped*);
 
       QSize getSize() { return QWidget::size(); };
       void repaint(int x, int y, int w, int h) {
@@ -93,6 +93,7 @@ class Editor : public QWidget {
       void raiseStack(int id);
       void setEditorFont(const QFont&);
       void setStartupMode(bool val) { _startupMode = val; }
+      void fontChanged();
       };
 
 #endif
