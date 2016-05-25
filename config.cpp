@@ -57,8 +57,6 @@ void Ped::configFont()
             fontWeight = font.weight();
             fontSize   = font.pointSizeF();
             setFont();
-//            cur_editor->setEditorFont(font);
-//            cur_editor->update();
             }
       }
 

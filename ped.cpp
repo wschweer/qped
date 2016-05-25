@@ -422,8 +422,11 @@ void Ped::setFont()
       eefont.setPointSizeF(fontSize);
       eefont.setWeight(fontWeight);
       eefont.setFixedPitch(true);
-//      if (curEditor)
-//            curEditor->fontChanged();
+      eefont.setLetterSpacing(QFont::PercentageSpacing, 100);
+      if (editor1)
+            editor1->fontChanged();
+      if (editor2)
+            editor2->fontChanged();
       }
 
 //---------------------------------------------------------
@@ -692,7 +695,7 @@ void Ped::splitVertical()
       {
       int orientation = splitter->orientation();
       splitter->setOrientation(Qt::Horizontal);
-      if (editor2 == 0) {
+      if (!editor2) {
             editor2  = new Editor(splitter, this);
             cur_editor = editor2;
             load((*(editor1->kll))->path());

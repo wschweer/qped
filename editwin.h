@@ -27,7 +27,7 @@ class EditWin : public QFrame
       Ped* ped;
       Editor* editor;
 
-      int fw, fh, fa;   // font metrics
+      qreal fw, fh, fa;   // font metrics
 
       virtual void paintEvent(QPaintEvent* e);
       virtual bool event(QEvent* event);
