@@ -268,13 +268,8 @@ Ped::Ped(int argc, char** argv)
       addActions(ag->actions());
       connect(ag, SIGNAL(triggered(QAction*)), SLOT(editCmd(QAction*)));
 
-      enterActive = false;
-      tree_width  = 150;
-
       new QShortcut(Qt::Key_F3 + Qt::SHIFT, this, SLOT(cmdShiftF3()));
 
-      tree           = 0;
-      aboutItem      = 0;
       colorify       = false;
       paren          = true;
       aboutDialog    = 0;

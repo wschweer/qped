@@ -495,7 +495,7 @@ void File::insert_column(Line* d, Line*s, int col)
       	QChar c = *src++;
             if (c == QChar::Null)
             	break;
-        	dst.insert_char(c);
+            dst.insert_char(c);
             ++dst;
             }
       modified = true;

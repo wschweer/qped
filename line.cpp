@@ -409,9 +409,9 @@ LinePos::LinePos(LineList*lst, iLineList il, int line, int col)
 QChar LinePos::operator*()
       {
       if (ilist == list->end())
-            return QChar(0);
+            return QChar::Null;
       QChar c = *il;
-      if (c == 0)
+      if (c.isNull())
             return QLatin1Char('\n');
       return c;
       }
@@ -458,7 +458,7 @@ void LinePos::incr()
       {
       if (ilist == list->end())
             return;
-      if (*il == 0) {
+      if ((*il).isNull()) {
             ++ilist;
             ++ln;
             if (ilist != list->end())
@@ -571,7 +571,7 @@ void LinePos::to_lastchar()
       }
 bool LinePos::eol()
       {
-      return *il == 0;
+      return (*il).isNull();
       }
 bool LinePos::sol()
       {

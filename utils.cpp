@@ -59,8 +59,8 @@ int hextobin(int c)
       c = toupper(c);
       const char* p = strchr(hexdigits, c);
       if (p)
-      	return p - hexdigits;
-  	return -1;
+            return p - hexdigits;
+      return -1;
       }
 
 /*---------------------------------------------------------

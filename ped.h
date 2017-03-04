@@ -72,13 +72,13 @@ class Ped : public QMainWindow
       int fontWeight;
       qreal fontSize;
 
-      int tree_width;
+      int tree_width      { 150 };
       int last_cmd;
-      Editor* editor1;          // split1
-      Editor* editor2;          // split2
+      Editor* editor1     { 0 };          // split1
+      Editor* editor2     { 0 };          // split2
       QSplitter* splitter;
       QSplitter* tsplitter;
-      TreeTab* tree;
+      TreeTab* tree       { 0 };
 
       QLabel* lineLabel;
       QLabel* colLabel;
@@ -97,7 +97,7 @@ class Ped : public QMainWindow
 
       bool colorify, paren;
 
-      bool enterActive;
+      bool enterActive   { false };
 
       QPixmap openIcon, saveIcon;
       QPixmap undoIcon, redoIcon;
@@ -181,7 +181,7 @@ class Ped : public QMainWindow
 
    public:
       QFont eefont;
-      QFrame* aboutItem;
+      QFrame* aboutItem     { 0 };
       QAction* undoAction;
       QAction* redoAction;
       QAction* histVAction;

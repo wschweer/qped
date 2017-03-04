@@ -106,7 +106,7 @@ iKontextListList KontextListList::at(int i)
 
 int KontextList::cur()
 	{
-      return this ? distance(begin(), _cont) : 0;
+      return distance(begin(), _cont);
       }
 
 int KontextListList::cur()

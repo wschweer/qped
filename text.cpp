@@ -798,11 +798,11 @@ void Kontext::buttonmotion(int x, int y)
             if (mark_mode == MARK_NONE) {
                   if (mpos1.zeile != pos.zeile)
                         mark_mode = MARK_LINES;
-                	if (mpos1.spalte != pos.spalte)
+                  if (mpos1.spalte != pos.spalte)
                         mark_mode = MARK_COLUMNS;
                   register_update(UPDATE_MARK);
                   update();
-              	}
+                  }
             ped->set_line_column_var();
             mpos2 = pos;
             register_update(UPDATE_MARK);
