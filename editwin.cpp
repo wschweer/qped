@@ -31,10 +31,7 @@ EditWin::EditWin(QWidget* parent, Ped* p, Editor* e)
       setAutoFillBackground(true);
       setFocusPolicy(Qt::StrongFocus);
 
-      QFontMetricsF fm(p->eefont);
-      fw = fm.averageCharWidth(); // fm.widt('x');
-      fh = fm.height();
-      fa = fm.ascent();
+      fontChanged();
       }
 
 //---------------------------------------------------------
@@ -339,6 +336,7 @@ void EditWin::fontChanged()
       fw = fm.averageCharWidth();
       fh = fm.height();
       fa = fm.ascent();
+      fd = fm.descent();
       update();
       }
 

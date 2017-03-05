@@ -235,7 +235,7 @@ void  Editor::edit_cmd(int cmd, QString s)
             return;
             }
 	if (!(*kll)->edit(cmd, s)) {
-            switch(cmd) {
+            switch (cmd) {
                case CMD_NEXT_KONTEXT:
                   {
                   unsigned int i = kll.cur();

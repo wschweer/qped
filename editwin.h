@@ -27,7 +27,6 @@ class EditWin : public QFrame
       Ped* ped;
       Editor* editor;
 
-      qreal fw, fh, fa;   // font metrics
 
       virtual void paintEvent(QPaintEvent* e);
       virtual bool event(QEvent* event);
@@ -41,6 +40,7 @@ class EditWin : public QFrame
       void mouseDoubleClickEvent(QMouseEvent* e);
 
    public:
+      qreal fw, fh, fa, fd;   // font metrics
       int cy;
       EditWin(QWidget*, Ped*, Editor*);
       int zeilen() const;

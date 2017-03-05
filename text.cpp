@@ -9,6 +9,7 @@
 //  the file LICENCE.GPL
 //=============================================================================
 
+#include <cmath>
 #include "line.h"
 #include "text.h"
 #include "ped.h"
@@ -29,7 +30,7 @@ Kontext::TextEditFunction Kontext::fkt[] = {
       { CMD_SCROLL_UP,    F(cmd_scroll_up),   },
       { CMD_SCROLL_DOWN,  F(cmd_scroll_down), },
       { CMD_NEXT,         F(cmd_next),        },
-      { CMD_BACK,         F(cmd_back),        },
+      { CMD_BACK,         &Kontext::cmd_back,        },
       { CMD_UP,           F(cmd_up),          },
       { CMD_DOWN,         F(cmd_down),        },
       { CMD_START_FILE,   F(cmd_start_file),  },
@@ -345,6 +346,7 @@ void Kontext::ryposition(int n)
                   --n;
                   }
             }
+      register_update(UPDATE_ALL);  // debug
       }
 
 /*---------------------------------------------------------
@@ -1336,6 +1338,7 @@ void Kontext::update1()
       {
       update_flags |= UPDATE_LINE;
 
+      int fh = lrint(editor->win->fh);   //fontMetrics().height();
       if (update_flags & UPDATE_MARK) {
             // put_mwindow(p, update_flags & UPDATE_ALL);
             editor->win->update();
@@ -1347,7 +1350,6 @@ void Kontext::update1()
             }
       else if (update_flags & UPDATE_LINE) {
             int zl = pos.yoffset;
-            int fh = editor->win->fontMetrics().height();
             int cy = editor->win->cy;
 
             int y1 = fh * zl;
@@ -1358,14 +1360,13 @@ void Kontext::update1()
                   if (cy > y2)
                         y2 = cy;
                   }
-            y2 += fh + editor->win->fontMetrics().descent();
+            y2 += lrint(editor->win->fh + editor->win->fd);
             editor->win->update(QRect(0, y1, editor->win->width(), y2-y1));
             if ((paren_line >= 0) && (paren_line == pos.yoffset))
                   paren_line = -1;
             }
       if (paren_line >= 0) {
             int zl = paren_line;
-            int fh = editor->win->fontMetrics().height();
             int y1 = fh * zl;
             int y2 = y1 + fh;
             editor->win->update(QRect(0, y1, editor->win->width(), y2-y1));
@@ -1495,12 +1496,11 @@ void Kontext::about()
             else
                   snprintf(p, n, "%s%s", word, proc ? "()" : "");
             }
-      int fw = editor->win->fontMetrics().averageCharWidth();
-
-      int x = editor->win->xoffset() + fw * (pos.spalte-pos.xoffset);
-      int y = editor->win->baseline(pos.yoffset);
+      int fw   = lrint(editor->win->fw);
+      int x    = editor->win->xoffset() + fw * (pos.spalte-pos.xoffset);
+      int y    = editor->win->baseline(pos.yoffset);
       QPoint r = editor->win->mapToGlobal(QPoint(x, y));
-      int w = editor->win->fontMetrics().averageCharWidth() * strlen(buffer) + 5;
+      int w    = lrint(editor->win->fw * strlen(buffer)) + 5;
 
       ped->aboutItem = new QFrame(editor->win);
       QLabel* l = new QLabel(buffer, ped->aboutItem);
