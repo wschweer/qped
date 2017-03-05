@@ -55,7 +55,7 @@ void Ped::configFont()
       if (flag) {
             fontFamily = font.family();
             fontWeight = font.weight();
-            fontSize   = font.pointSizeF();
+            fontSize   = font.pixelSize();
             setFont();
             }
       }
@@ -82,8 +82,10 @@ void Ped::saveConfig()
       xml.geometryTag("geometry", this);
       xml.intTag("colorify", colorify);
       xml.intTag("paren", paren);
-      xml.strTag("fontFamily", fontFamily);
-      xml.doubleTag("fontSize", fontSize);
+      if (!fontFamily.isEmpty())
+            xml.strTag("fontFamily", fontFamily);
+      if (fontSize > 0)
+            xml.doubleTag("fontSize", fontSize);
       xml.intTag("fontWeight", fontWeight);
 
       xml.etag("PedConfig");

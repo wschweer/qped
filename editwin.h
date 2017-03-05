@@ -40,7 +40,6 @@ class EditWin : public QFrame
       void mouseDoubleClickEvent(QMouseEvent* e);
 
    public:
-      qreal fw, fh, fa, fd;   // font metrics
       int cy;
       EditWin(QWidget*, Ped*, Editor*);
       int zeilen() const;
@@ -49,7 +48,6 @@ class EditWin : public QFrame
       int xoffset() const;
       void pos2xy(int x, int y, int* z, int* s) const;
       int baseline(int) const;
-      void fontChanged();
       };
 
 #endif

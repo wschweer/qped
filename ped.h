@@ -68,9 +68,11 @@ class TreeTab;
 
 class Ped : public QMainWindow
       {
-      QString fontFamily;
-      int fontWeight;
-      qreal fontSize;
+      Q_OBJECT
+
+      QString fontFamily  { "Bitstream Vera Sans Mono" };
+      int fontWeight      { 50 };
+      qreal fontSize      { 14 };
 
       int tree_width      { 150 };
       int last_cmd;
@@ -117,8 +119,7 @@ class Ped : public QMainWindow
 
       QWidget* enter;
       EnterEdit* enterLine;
-
-      Q_OBJECT
+      double _fw;
 
       void genFileToolbar();
       void genPopupMenu();
@@ -180,7 +181,9 @@ class Ped : public QMainWindow
       void edit_cmd(int cmd, const char*);
 
    public:
+      double fw() const { return _fw; }
       QFont eefont;
+      int fh, fa, fd;   // font metrics
       QFrame* aboutItem     { 0 };
       QAction* undoAction;
       QAction* redoAction;

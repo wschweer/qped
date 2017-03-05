@@ -9,7 +9,6 @@
 //  the file LICENCE.GPL
 //=============================================================================
 
-#include <cmath>
 #include "line.h"
 #include "text.h"
 #include "ped.h"
@@ -1338,7 +1337,7 @@ void Kontext::update1()
       {
       update_flags |= UPDATE_LINE;
 
-      int fh = lrint(editor->win->fh);   //fontMetrics().height();
+      int fh = ped->fh;
       if (update_flags & UPDATE_MARK) {
             // put_mwindow(p, update_flags & UPDATE_ALL);
             editor->win->update();
@@ -1360,7 +1359,7 @@ void Kontext::update1()
                   if (cy > y2)
                         y2 = cy;
                   }
-            y2 += lrint(editor->win->fh + editor->win->fd);
+            y2 += ped->fh + ped->fd;
             editor->win->update(QRect(0, y1, editor->win->width(), y2-y1));
             if ((paren_line >= 0) && (paren_line == pos.yoffset))
                   paren_line = -1;
@@ -1496,11 +1495,11 @@ void Kontext::about()
             else
                   snprintf(p, n, "%s%s", word, proc ? "()" : "");
             }
-      int fw   = lrint(editor->win->fw);
+      int fw   = editor->win->fw;
       int x    = editor->win->xoffset() + fw * (pos.spalte-pos.xoffset);
       int y    = editor->win->baseline(pos.yoffset);
       QPoint r = editor->win->mapToGlobal(QPoint(x, y));
-      int w    = lrint(editor->win->fw * strlen(buffer)) + 5;
+      int w    = editor->win->fw * strlen(buffer) + 5;
 
       ped->aboutItem = new QFrame(editor->win);
       QLabel* l = new QLabel(buffer, ped->aboutItem);

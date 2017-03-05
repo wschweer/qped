@@ -91,9 +91,7 @@ class Editor : public QWidget {
       int addStack(QWidget* w);
       void removeStack(QWidget* w);
       void raiseStack(int id);
-      void setEditorFont(const QFont&);
       void setStartupMode(bool val) { _startupMode = val; }
-      void fontChanged();
       };
 
 #endif

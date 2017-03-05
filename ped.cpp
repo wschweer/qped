@@ -9,6 +9,7 @@
 //  the file LICENCE.GPL
 //=============================================================================
 
+#include <cmath>
 #include <unistd.h>
 #include "ped.h"
 #include "utils.h"
@@ -414,14 +415,15 @@ Ped::Ped(int argc, char** argv)
 void Ped::setFont()
       {
       eefont = QFont(fontFamily);
-      eefont.setPointSizeF(fontSize);
+      eefont.setPixelSize(fontSize);
       eefont.setWeight(fontWeight);
       eefont.setFixedPitch(true);
-      eefont.setLetterSpacing(QFont::PercentageSpacing, 100);
-      if (editor1)
-            editor1->fontChanged();
-      if (editor2)
-            editor2->fontChanged();
+//      eefont.setLetterSpacing(QFont::PercentageSpacing, 100);
+      QFontMetricsF fm(eefont);
+      _fw = fm.averageCharWidth();
+      fh = lrint(fm.height());
+      fa = lrint(fm.ascent());
+      fd = lrint(fm.descent());
       }
 
 //---------------------------------------------------------

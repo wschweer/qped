@@ -30,8 +30,6 @@ EditWin::EditWin(QWidget* parent, Ped* p, Editor* e)
       setPalette(pa);
       setAutoFillBackground(true);
       setFocusPolicy(Qt::StrongFocus);
-
-      fontChanged();
       }
 
 //---------------------------------------------------------
@@ -48,10 +46,11 @@ void EditWin::paintEvent(QPaintEvent* e)
       int y2 = r.y() + r.height() - RAND;
 
       QPainter p(this);
+      p.setFont(ped->eefont);
       p.setRenderHint(QPainter::TextAntialiasing, true);
 
-      int start   = y1 / fh;
-      int end     = (y2 + fh - 1) / fh;
+      int start   = y1 / ped->fh;
+      int end     = (y2 + ped->fh - 1) / ped->fh;
       iLineList l = k->topLine(start);
 
       int cr, cg, cb;
@@ -66,7 +65,7 @@ void EditWin::paintEvent(QPaintEvent* e)
 
       for (int i = start; i < end; ++i) {
             if (l == k->text->end()) {
-                  p.eraseRect(0, i * fh + RAND, width(), fh);
+                  p.eraseRect(0, i * ped->fh + RAND, width(), ped->fh);
                   continue;
                   }
             if (colorP) {
@@ -75,21 +74,21 @@ void EditWin::paintEvent(QPaintEvent* e)
                   QChar cr  = k->leftChar();
                   if (cv == '(' || cv == '{') {
                         QChar ccc = k->colorBraceV(cv, sp, zl);
-                        p.fillRect(sp * fw + RAND, zl * fh + RAND, fw, fh, Qt::red);
-                        p.drawText(sp * fw + RAND, zl * fh + RAND + fa, QString(ccc));
+                        p.fillRect(sp * ped->fw() + RAND, zl * ped->fh + RAND, ped->fw(), ped->fh, Qt::red);
+                        p.drawText(sp * ped->fw() + RAND, zl * ped->fh + RAND + ped->fa, QString(ccc));
                         }
                   if (cr == ')' || cr == '}') {
                         QChar ccc = k->colorBraceR(cr, sp, zl);
-                        p.fillRect(sp * fw + RAND, zl * fh + RAND, fw, fh, Qt::red);
-                        p.drawText(sp * fw + RAND, zl * fh + RAND + fa, QString(ccc));
+                        p.fillRect(sp * ped->fw() + RAND, zl * ped->fh + RAND, ped->fw(), ped->fh, Qt::red);
+                        p.drawText(sp * ped->fw() + RAND, zl * ped->fh + RAND + ped->fa, QString(ccc));
                         }
                   }
 
             int sp1, sp2;
             if (k->isMarked(i, sp1, sp2)) {
-                  int xp1 = RAND + sp1 * fw;
-                  int xp2 = RAND + sp2 * fw + fw;
-                  p.fillRect(xp1, i * fh + RAND, xp2-xp1, fh, mc);
+                  int xp1 = RAND + sp1 * ped->fw();
+                  int xp2 = RAND + sp2 * ped->fw() + ped->fw();
+                  p.fillRect(xp1, i * ped->fh + RAND, xp2-xp1, ped->fh, mc);
                   }
             iLine il  = k->sl(&*l);
             int x2    = spalten();
@@ -116,12 +115,12 @@ void EditWin::paintEvent(QPaintEvent* e)
 	      // draw cursor
 	      int cx;
       	QString s(k->getCursorInfo(cx, cy));
-	      cx = cx * fw + RAND;
-      	cy = cy * fh + RAND;
-	      QRect rr(cx, cy, fw, fh);
+	      cx = cx * ped->fw() + RAND;
+      	cy = cy * ped->fh + RAND;
+	      QRect rr(cx, cy, ped->fw(), ped->fh);
       	p.fillRect(rr, hasFocus() ? fgColor : QColor(160, 160, 160));
 	      p.setPen(bgColor);
-      	p.drawText(cx, cy + fa, s);
+      	p.drawText(cx, cy + ped->fa, s);
             }
       p.end();
       }
@@ -292,16 +291,17 @@ void EditWin::focusInEvent(QFocusEvent*)
 
 int EditWin::zeilen() const
       {
-      return (height() - RAND2) / fh;
+      return (height() - RAND2) / ped->fh;
       }
 int EditWin::spalten() const
       {
-      return (width() - RAND2) / fw;
+      return (width() - RAND2) / ped->fw();
       }
 int EditWin::yoffset() const
       {
-      return (RAND + fa);
+      return (RAND + ped->fa);
       }
+
 int EditWin::xoffset() const
       {
       return RAND;
@@ -313,8 +313,8 @@ int EditWin::xoffset() const
 
 void EditWin::pos2xy(int x, int y, int* z, int* s) const
       {
-      *z = (y - yoffset() + fa) / fh;
-      *s = (x - xoffset()) / fw;
+      *z = (y - yoffset() + ped->fa) / ped->fh;
+      *s = (x - xoffset()) / ped->fw();
       }
 
 //---------------------------------------------------------
@@ -323,20 +323,6 @@ void EditWin::pos2xy(int x, int y, int* z, int* s) const
 
 int EditWin::baseline(int y) const
       {
-      return y * fh + RAND + fa;
-      }
-
-//---------------------------------------------------------
-//   fontChanged
-//---------------------------------------------------------
-
-void EditWin::fontChanged()
-      {
-      QFontMetricsF fm(ped->eefont);
-      fw = fm.averageCharWidth();
-      fh = fm.height();
-      fa = fm.ascent();
-      fd = fm.descent();
-      update();
+      return y * ped->fh + RAND + ped->fa;
       }
 

@@ -60,7 +60,6 @@ Editor::Editor(QWidget* parent, Ped* p)
       hScroll = new QScrollBar(Qt::Horizontal, eframe);
       vScroll = new QScrollBar(Qt::Vertical, eframe);
       win     = new EditWin(eframe, ped, this);
-      win->setFont(p->eefont);
 
       grid->addWidget(win, 0, 0);
       grid->addWidget(vScroll, 0, 1);
@@ -331,15 +330,6 @@ void Editor::removeStack(QWidget* w)
 void Editor::raiseStack(int id)
       {
       stack->setCurrentIndex(id);
-      }
-
-//---------------------------------------------------------
-//   setFont
-//---------------------------------------------------------
-
-void Editor::setEditorFont(const QFont& font)
-      {
-      win->setFont(font);
       }
 
 /*---------------------------------------------------------
@@ -621,14 +611,5 @@ void Editor::vScrollTo(int val)
             return;
       /* int n =*/ (*kll)->yscrollto(val);
       win->update();
-      }
-
-//---------------------------------------------------------
-//   fontChanged
-//---------------------------------------------------------
-
-void Editor::fontChanged()
-      {
-      win->setFont(ped->eefont);
       }
 
