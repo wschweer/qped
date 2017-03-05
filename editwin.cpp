@@ -335,7 +335,7 @@ int EditWin::baseline(int y) const
 
 void EditWin::fontChanged()
       {
-      QFontMetrics fm(ped->eefont);
+      QFontMetricsF fm(ped->eefont);
       fw = fm.averageCharWidth();
       fh = fm.height();
       fa = fm.ascent();
