@@ -1,4 +1,4 @@
 qped
 ====
 
-The Qt Personal Editor
+My Qt Personal Editor

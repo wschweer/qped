@@ -28,6 +28,8 @@
 #include <QTemporaryFile>
 #include <QFontDialog>
 #include <QColorDialog>
+#include <QCompleter>
+#include <QFileSystemModel>
 #include <QtXml/qdom.h>
 
 #include <qapplication.h>

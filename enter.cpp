@@ -1,181 +1,225 @@
-//=============================================================================
-//  PEd Editor
-//
-//  Copyright (C) 1997-2011 Werner Schweer
-//
-//  This program is free software; you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License version 2
-//  as published by the Free Software Foundation and appearing in
-//  the file LICENCE.GPL
-//=============================================================================
-
-#include "ped.h"
+/**
+ * \file
+ *
+ * \author Mattia Basaglia
+ *
+ * \copyright Copyright (C) 2012-2015 Mattia Basaglia
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 #include "enter.h"
-#include "cmd.h"
-#include "utils.h"
 
-//---------------------------------------------------------
-//   EnterEdit
-//---------------------------------------------------------
+#include <QKeyEvent>
+#include <QWheelEvent>
 
-EnterEdit::EnterEdit(QWidget* parent, Ped* p)
-   : QLineEdit(parent)
+#include <QCompleter>
+#include <QAbstractItemView>
+#include <QScrollBar>
+
+HistoryLineEdit::HistoryLineEdit(QWidget *parent) :
+    QLineEdit(parent),
+    current_line(0),
+    completer(0),
+    completion_minchars(1),
+    completion_max(0)
+{
+    connect(this,SIGNAL(returnPressed()),SLOT(execute()));
+}
+
+void HistoryLineEdit::keyPressEvent(QKeyEvent* ev)
       {
-      ped = p;
-      }
-
-//---------------------------------------------------------
-//   enter_up
-//---------------------------------------------------------
-
-QString EnterEdit::enter_up()
-      {
-      if (enter_n == 0)       // wenn keine historie
-            return QString("");
-
-	enter_stack[enter_head] = text();
-
-      --enter_head;
-      --enter_n;
-      enter_head %= ENTER_SIZE;
-      return enter_stack[enter_head];
-      }
-
-//---------------------------------------------------------
-//   enter_down
-//---------------------------------------------------------
-
-QString EnterEdit::enter_down()
-      {
-	if (enter_max != enter_head) {
-	      enter_stack[enter_head] = text();
-            ++enter_head;
-            ++enter_n;
-            enter_head %= ENTER_SIZE;
-            return enter_stack[enter_head];
-            }
-      return QString();
-      }
-
-//---------------------------------------------------------
-//   enter_push
-//---------------------------------------------------------
-
-void EnterEdit::push()
-      {
-      if (text().isEmpty()) {
+//printf("==%x %p\n", ev->key(), completer);
+      if ( ev->key() == Qt::Key_Up) {
+            previous_line();
             return;
             }
-	enter_stack[enter_head++] = text();
-      enter_head %= ENTER_SIZE;
-      if (enter_n < ENTER_SIZE)
-            ++enter_n;
-      enter_max = enter_head;
-      }
+      else if ( ev->key() == Qt::Key_Down) {
+            next_line();
+            return;
+            }
+      else if (completer && completer->popup() && completer->popup()->isVisible()) {
+            switch (ev->key()) {
+                  case Qt::Key_Enter:
+                  case Qt::Key_Return:
+                  case Qt::Key_F4:
+                  case Qt::Key_Select:
+                  completer->popup()->hide();
+                  return;
+                  }
+            }
+      QLineEdit::keyPressEvent(ev);
 
-//---------------------------------------------------------
-//   event
-//    keyPressEvent does not deliver TAB and cannot
-//    be used
-//---------------------------------------------------------
+      if (completer) {
+            QString current = current_word();
+            completer->setCompletionPrefix(current);
 
-#if 0
-bool EnterEdit::event(QEvent* event)
+            if (current.size() < completion_minchars || completer->completionCount() == 0 ||
+               (completion_max > 0 && completer->completionCount() > completion_max) )
+                  {
+                  if (completer->popup())
+                        completer->popup()->hide();
+                  }
+            else {
+                  // Get the selection status
+            int sel = selectionStart();
+            int sellength = selectedText().size();
+            // Get the current cursor position
+            int c = cursorPosition();
+            // Get the start of the current word
+            setCursorPosition(word_start());
+            // Get the cursor rectangle at the beginning of the current word
+            QRect rect = cursorRect();
+            // Restore cursor position (clears the selection)
+            setCursorPosition(c);
+            // If we had a selection
+            if ( sel != -1 )
+            {
+                // If the selection started at the cursor,
+                // it needs to start at the far end and go back
+                // (otherwise it moves the cursor at the end)
+                if ( sel == c )
+                    setSelection(sel+sellength, -sellength);
+                else
+                    setSelection(sel, sellength);
+            }
+            // Set the rectangle to the appropriate width
+            rect.setWidth(
+                completer->popup()->sizeHintForColumn(0)
+                + completer->popup()->verticalScrollBar()->sizeHint().width()
+            );
+            // Display the completer under the rectangle
+            completer->complete(rect);
+        }
+    }
+}
+
+void HistoryLineEdit::wheelEvent(QWheelEvent *ev)
       {
-      if (event->type() != QEvent::KeyPress)
-            return QWidget::event(event);
-      QKeyEvent* e = (QKeyEvent*)event;
-      int key = e->key();
-      int cmd = 0;
-
-      bool ctrl = e->modifiers() & Qt::ControlModifier;
-      if (ctrl) {
-            switch(key) {
-                  case Qt::Key_M:
-                        cmd = CMD_MAN;
-                        break;
-
-                  case Qt::Key_V:
-                        cmd = CMD_ENTER_KOLLAPS;
-                        break;
-
-                  case Qt::Key_F:
-                        cmd = CMD_FUNCTION;
-                        break;
-
-                  case Qt::Key_G:
-                        cmd = CMD_GOTO;
-                        break;
-
-                  case Qt::Key_K:
-                        cmd = CMD_SHELL;
-                        break;
-
-                  case Qt::Key_S:
-//                        cursorLeft(false, 1);
-                        break;
-
-                  case Qt::Key_D:
-//                        cursorRight(false, 1);
-                        break;
-
-                  default:
-                        QLineEdit::keyPressEvent(e);
-                        break;
-                  }
-            }
-      else {
-            switch (key) {
-                  case Qt::Key_Escape:
-                        cmd = ESCAPE;
-                        break;
-
-                  case Qt::Key_Tab:
-                        {
-                        char* pp = tab_expand(text().toLatin1().data(), ped->getCurDir().toLatin1().data());
-                        setText(pp);
-                        delete pp;
-                        }
-                        return true;
-
-//                  case Qt::Key_F3:
-//                        cmd = CMD_NEW_ALTFIL;
-//                        break;
-
-                  case Qt::Key_F7:
-                        printf("    f7\n");
-                        cmd = CMD_SEARCH_F;
-                        break;
-
-                  case Qt::Key_Up:
-                        {
-                        QString s(enter_up());
-                        if (!s.isEmpty())
-                              setText(s);
-                        }
-                        break;
-                  case Qt::Key_Down:
-                        {
-                        QString s(enter_down());
-                        if (!s.isEmpty())
-                              setText(s);
-                        }
-                        break;
-
-                  case Qt::Key_F8:
-                        cmd = CMD_STREAM;
-                        break;
-
-                  default:
-                        QLineEdit::keyPressEvent(e);
-                        break;
-                  }
-            }
-      if (cmd) {
-            push();
-            ped->leaveEnterInput(cmd);
-            return true;
-            }
-      return false;
+      if ( ev->delta() > 0 )
+            previous_line();
+      else
+            next_line();
       }
-#endif
+
+void HistoryLineEdit::previous_line()
+{
+    if ( lines.empty() )
+        return;
+
+    if ( !text().isEmpty() &&
+         ( current_line >= lines.size() || text() != lines[current_line] ) )
+        unfinished = text();
+
+    if ( current_line > 0 )
+        current_line--;
+
+    setText(lines[current_line]);
+}
+
+
+void HistoryLineEdit::next_line()
+{
+    if ( lines.empty() )
+        return;
+
+    current_line++;
+
+    if ( current_line >= lines.size() )
+    {
+        setText(unfinished);
+        unfinished = "";
+        current_line = lines.size();
+    }
+    else
+        setText(lines[current_line]);
+}
+
+void HistoryLineEdit::execute()
+{
+    if (lines.empty() || lines.back() != text())
+        lines << text();
+    current_line = lines.size();
+    clear();
+    emit lineExecuted(lines.back());
+}
+
+void HistoryLineEdit::setHistory(const QStringList& history)
+{
+    lines = history;
+    current_line = lines.size();
+}
+
+int HistoryLineEdit::word_start() const
+{
+    // lastIndexOf returns the index of the last space or -1 if there are no spaces
+    // so that + 1 returns the index of the character starting the word or 0
+    int after_space = text().leftRef(cursorPosition()).lastIndexOf(' ') + 1;
+    if ( text().rightRef(text().size()-after_space).startsWith(completion_prefix) )
+        after_space += completion_prefix.size();
+    return after_space;
+}
+
+QString HistoryLineEdit::current_word() const
+{
+    int completion_index = word_start();
+    return text().mid(completion_index, cursorPosition() - completion_index);
+}
+
+void HistoryLineEdit::autocomplete(const QString& completion)
+{
+    int completion_index = word_start();
+    setText(text().replace(
+        completion_index, cursorPosition() - completion_index,
+        completion
+    ));
+    setCursorPosition(completion_index+completion.size());
+}
+
+void HistoryLineEdit::setWordCompleter(QCompleter* comp)
+{
+    if ( completer )
+    {
+        disconnect(completer, 0, this, 0);
+        completer->setWidget(0);
+    }
+
+    completer = comp;
+
+    if ( comp )
+    {
+        /// \todo should set these only when on focus
+        connect(completer, SIGNAL(activated(QString)),
+                this,      SLOT(autocomplete(QString)));
+        connect(completer, SIGNAL(highlighted(QString)),
+                this,      SLOT(autocomplete(QString)));
+        completer->setWidget(this);
+    }
+}
+
+void HistoryLineEdit::setWordCompleterPrefix(const QString& prefix)
+{
+    completion_prefix = prefix;
+}
+
+void HistoryLineEdit::setWordCompleterMinChars(int min_chars)
+      {
+      completion_minchars = min_chars;
+      }
+
+void HistoryLineEdit::setWordCompleterMaxSuggestions(int max)
+      {
+      completion_max = max;
+      }
+

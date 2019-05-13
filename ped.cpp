@@ -193,9 +193,9 @@ static ActionList editActions[] = {
       { CMD_BACK,         Qt::Key_Left  },
       { CMD_PAGE_UP,      Qt::Key_PageUp },
       { CMD_PAGE_DOWN,    Qt::Key_PageDown },
-      { CMD_UP,           Qt::Key_Up },
+//      { CMD_UP,           Qt::Key_Up },
+//      { CMD_DOWN,         Qt::Key_Down },
       { CMD_VIEW_TOGGLE,  Qt::Key_Up + CONTROL },
-      { CMD_DOWN,         Qt::Key_Down },
       { CMD_VIEW_TOGGLE,  Qt::Key_Down + CONTROL },
       { CMD_START_LINE,   Qt::Key_Home },
       { CMD_START_FILE,   Qt::Key_Home + CONTROL },
@@ -260,13 +260,25 @@ Ped::Ped(int argc, char** argv)
    : QMainWindow()
       {
       QActionGroup* ag = new QActionGroup(this);
-      for (unsigned i = 0; i < sizeof(editActions)/sizeof(*editActions); ++i) {
+      for (const ActionList& al : editActions) {
             QAction* a = new QAction(ag);
-            a->setData(editActions[i].cmd);
-            a->setShortcut(editActions[i].shortcut);
+            a->setData(al.cmd);
+            a->setShortcut(al.shortcut);
             a->setShortcutContext(Qt::ApplicationShortcut);
             }
       addActions(ag->actions());
+      upAction = new QAction(ag);
+      upAction->setData(CMD_UP);
+      upAction->setShortcut(Qt::Key_Up);
+      upAction->setShortcutContext(Qt::ApplicationShortcut);
+      addAction(upAction);
+
+      downAction = new QAction(ag);
+      downAction->setData(CMD_DOWN);
+      downAction->setShortcut(Qt::Key_Down);
+      downAction->setShortcutContext(Qt::ApplicationShortcut);
+      addAction(downAction);
+
       connect(ag, SIGNAL(triggered(QAction*)), SLOT(editCmd(QAction*)));
 
       new QShortcut(Qt::Key_F3 + Qt::SHIFT, this, SLOT(cmdShiftF3()));
@@ -329,7 +341,23 @@ Ped::Ped(int argc, char** argv)
       QLabel* enterLabel = new QLabel("Enter:", enter);
       layout1->addWidget(enterLabel, 0, Qt::AlignLeft | Qt::AlignVCenter);
 
-      enterLine = new EnterEdit(enter, this);
+      enterLine = new HistoryLineEdit(enter);
+      QStringList sl;
+      sl << "mops";
+      sl << "mopschen";
+      sl << "klops";
+      QCompleter* completer = new QCompleter(sl, this);
+
+      QStringList nameFilters;
+      nameFilters << "*";
+      QDir::Filters filters = QDir::Files;
+      QFileSystemModel* fm = new QFileSystemModel(completer);
+      fm->setFilter(filters);
+//      fm->setRootPath("/home2/ws/qped");
+//      completer->setModel(fm);
+//      completer->setCompletionMode(QCompleter::InlineCompletion);
+      enterLine->setWordCompleter(completer);
+
       layout1->addWidget(enterLine, 50, Qt::AlignVCenter);
 
       QToolButton* enterCmdButton = new QToolButton(enter);
@@ -415,7 +443,8 @@ Ped::Ped(int argc, char** argv)
 void Ped::setFont()
       {
       eefont = QFont(fontFamily);
-      eefont.setPixelSize(fontSize);
+//      eefont.setPixelSize(fontSize);
+      eefont.setPointSizeF(fontSize);
       eefont.setWeight(fontWeight);
       eefont.setFixedPitch(true);
 //      eefont.setLetterSpacing(QFont::PercentageSpacing, 100);
@@ -436,6 +465,8 @@ void Ped::enterInput(QString s)
       enterLine->setText(s);
       enter->show();
       enterLine->setFocus();
+      removeAction(upAction);
+      removeAction(downAction);
       }
 
 //---------------------------------------------------------
@@ -475,7 +506,7 @@ void Ped::expand_c_proc(const QString& txt)
       if (txt == "main") {
             QString s("\n\nint %1(int argc, char* argv[])\n");
             edit_print(s.arg(txt));
-            edit_print("      {\n\nreturn 0;\n}\n");
+            edit_print("      {\n\n      return 0;\n      }\n");
             edit_cmd(CMD_UP);
             }
       else {
@@ -523,9 +554,11 @@ void Ped::leaveEnterInput(int code)
       {
       if (enterActive) {
             enterActive = false;
-            enterLine->push();
             cur_editor->leaveEnterInput(code, enterLine->text());
+            enterLine->execute();
             enter->hide();
+            addAction(upAction);
+            addAction(downAction);
             }
       }
 
@@ -941,7 +974,6 @@ void Ped::edit_print(const QString& s)
 
 void  Ped::edit_cmd(int cmd, const char* param)
       {
-// printf("edit_cmd <%s>\n", param);
       if (recmode)
             rec_cmd(cmd, param);
       if (cmd > CMD_MAXCODE) {        // ignore unknown commands
@@ -982,15 +1014,15 @@ void  Ped::edit_cmd(int cmd, const char* param)
                         leaveEnterInput(CMD_FUNCTION);
                         break;
                   case CMD_UP: {
-                        QString s(enterLine->enter_up());
-                        if (!s.isEmpty())
-                              enterLine->setText(s);
+//                        QString s(enterLine->enter_up());
+//                        if (!s.isEmpty())
+//                              enterLine->setText(s);
                         }
                         break;
                   case CMD_DOWN: {
-                        QString s(enterLine->enter_down());
-                        if (!s.isEmpty())
-                              enterLine->setText(s);
+//                        QString s(enterLine->enter_down());
+//                        if (!s.isEmpty())
+//                              enterLine->setText(s);
                         }
                         break;
                   }

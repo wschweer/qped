@@ -59,7 +59,7 @@ struct Cmd {
 typedef std::list<Cmd> CmdList;
 typedef std::list<Cmd>::iterator iCmdList;
 
-class EnterEdit;
+class HistoryLineEdit;
 class TreeTab;
 
 //----------------------------------------------------------
@@ -99,7 +99,6 @@ class Ped : public QMainWindow
 
       bool colorify, paren;
 
-      bool enterActive   { false };
 
       QPixmap openIcon, saveIcon;
       QPixmap undoIcon, redoIcon;
@@ -118,8 +117,12 @@ class Ped : public QMainWindow
       int geometry_h;
 
       QWidget* enter;
-      EnterEdit* enterLine;
+      HistoryLineEdit* enterLine;
       double _fw;
+
+      QAction* upAction;
+      QAction* downAction;
+      QAction* tabAction;
 
       void genFileToolbar();
       void genPopupMenu();
@@ -192,6 +195,7 @@ class Ped : public QMainWindow
       QLabel* urlLabel;
       QDir cur_dir;
       Editor* cur_editor;           // current edit split
+      bool enterActive   { false };
 
       Ped(int argc, char** argv);
       void open_kontext();

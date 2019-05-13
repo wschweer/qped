@@ -1,43 +1,125 @@
-//=============================================================================
-//  PEd Editor
-//
-//  Copyright (C) 1997-2011 Werner Schweer
-//
-//  This program is free software; you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License version 2
-//  as published by the Free Software Foundation and appearing in
-//  the file LICENCE.GPL
-//=============================================================================
+/**
+ * \file
+ *
+ * \author Mattia Basaglia
+ *
+ * \copyright Copyright (C) 2012-2015 Mattia Basaglia
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+#ifndef HISTORY_LINE_EDIT_HPP
+#define HISTORY_LINE_EDIT_HPP
 
-#ifndef __enter_h__
-#define __enter_h__
+#include <QLineEdit>
 
-#define ENTER_SIZE      32
+/**
+ * \brief Line edit providing a history of entered text
+ */
+class HistoryLineEdit : public QLineEdit
+{
+    Q_OBJECT
 
-class Ped;
+public:
+    explicit HistoryLineEdit(QWidget *parent = 0);
 
-//---------------------------------------------------------
-//   EnterEdit
-//---------------------------------------------------------
+    /**
+     * \brief Number of available lines
+     */
+    int lineCount() const { return lines.size(); }
 
-class EnterEdit : public QLineEdit {
-      Q_OBJECT
+    /**
+     * \brief Stored history
+     */
+    QStringList history() const { return lines; }
 
-      Ped* ped;
-      int enter_head    { 0 };
-      int enter_tail;
-      int enter_n       { 0 };
-      int enter_max     { 0 };
-      QString enter_stack[ENTER_SIZE];
+    /**
+     * \brief Overwrite the line history
+     */
+    void setHistory(const QStringList& history);
 
-//      virtual bool event(QEvent* event);
+    /**
+     * \brief Sets the completer used on a per-word completion
+     *
+     * Unlike setCompleter(), this suggests completion at every entered word
+     *
+     * If \c completer is null it will remove the current completer
+     */
+    void setWordCompleter(QCompleter* completer);
 
-   public:
-      void push();
-      QString enter_up();
-      QString enter_down();
-      EnterEdit(QWidget*, Ped*);
-      };
+    /**
+     * \brief Sets a prefix that is ignored by the word completer
+     */
+    void setWordCompleterPrefix(const QString& prefix);
 
-#endif
+    /**
+     * \brief Sets the minimum number of characters required to display the word completer
+     */
+    void setWordCompleterMinChars(int min_chars);
+
+    /**
+     * \brief Sets the maximum number of suggestions that the completer should show.
+     *
+     * If more than this many suggestions are found the completer isn't shown
+     */
+    void setWordCompleterMaxSuggestions(int max);
+
+public slots:
+    /**
+     * \brief Executes the current line
+     */
+    void execute();
+
+signals:
+    /**
+     * \brief Emitted when some text is executed
+     */
+    void lineExecuted(QString);
+
+protected:
+    void keyPressEvent(QKeyEvent *) Q_DECL_OVERRIDE;
+    void wheelEvent(QWheelEvent *) Q_DECL_OVERRIDE;
+
+    void previous_line();
+    void next_line();
+
+    /**
+     * \brief Current word being edited (used to fire the completer)
+     */
+    QString current_word() const;
+
+private slots:
+    /**
+     * \brief Autocompletes the current word
+     */
+    void autocomplete(const QString& completion);
+
+private:
+    /**
+     * \brief Returns the index of the character starting the currently edited word
+     */
+    int word_start() const;
+
+    int         current_line;
+    QStringList lines;
+    QString     unfinished;
+
+    QCompleter* completer;
+    QString     completion_prefix;
+    int         completion_minchars;
+    int         completion_max;
+};
+
+#endif // HISTORY_LINE_EDIT_HPP
 

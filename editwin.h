@@ -27,7 +27,6 @@ class EditWin : public QFrame
       Ped* ped;
       Editor* editor;
 
-
       virtual void paintEvent(QPaintEvent* e);
       virtual bool event(QEvent* event);
       virtual void focusInEvent(QFocusEvent*e);

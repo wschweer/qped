@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd build
-make -j12
+make -j32
 cd ..
 build/qped
 

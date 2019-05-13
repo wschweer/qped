@@ -13,17 +13,19 @@ cmake_minimum_required(VERSION 2.8)
 project (qped)
 
 set(CMAKE_BUILD_TYPE Debug)
-set(CMAKE_VERBOSE_MAKEFILE ON)
+# set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_AUTOMOC ON)
 
 find_package(Qt5 COMPONENTS Widgets Xml)
 
-QT5_WRAP_CPP(qped moc ped.h editor.h enter.h editwin.h)
-set(CMAKE_AUTOMOC ON)
+# QT5_WRAP_CPP(qped moc ped.h editor.h enter.h editwin.h)
+
 
 set(CMAKE_CXX_FLAGS  "-std=c++11 -Wall -fno-exceptions -include ${PROJECT_SOURCE_DIR}/all.h")
 
 ADD_EXECUTABLE(qped
       ${moc}
+      ped.h editor.h enter.h editwin.h
       ped.cpp editor.cpp file.cpp help.cpp line.cpp mtext.cpp
       search.cpp text.cpp tree.cpp enter.cpp
       utils.cpp view.cpp kontext.cpp xml.cpp config.cpp editwin.cpp

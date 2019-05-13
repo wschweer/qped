@@ -42,6 +42,8 @@ class TabBar : public QTabBar {
 //---------------------------------------------------------
 
 class Editor : public QWidget {
+      Q_OBJECT
+
       TabBar* fb;
       QWidget* eframe;
       QStackedWidget* stack;
@@ -54,7 +56,6 @@ class Editor : public QWidget {
       int o_xvisible, o_xtotal, o_xpos;
       int o_yvisible, o_ytotal, o_ypos;
       bool _startupMode { false };
-      Q_OBJECT
 
    public slots:
       void edit_cmd(int, QString s = QString());

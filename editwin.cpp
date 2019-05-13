@@ -143,7 +143,7 @@ bool EditWin::event(QEvent* event)
       if ((stat & (Qt::CTRL | Qt::ALT)) == 0)
             c = s[0];
 #if 0
-printf("key %x ext %d vkey %d\n", e->key(), e->hasExtendedInfo(), e->nativeVirtualKey());
+printf("EditWin::event %x\n", e->key());
       if (s.size()) {
 printf("  text %x\n", c.unicode());
             }

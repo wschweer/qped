@@ -49,13 +49,15 @@ void Ped::configBgColor()
 
 void Ped::configFont()
       {
-      QFont old_font = cur_editor->win->font();
+      QFont old_font(fontFamily);
+      old_font.setPointSizeF(fontSize);
+      old_font.setWeight(fontWeight);
       bool flag;
       QFont font = QFontDialog::getFont(&flag, old_font, 0, "select font", QFontDialog::MonospacedFonts);
       if (flag) {
             fontFamily = font.family();
             fontWeight = font.weight();
-            fontSize   = font.pixelSize();
+            fontSize   = font.pointSize();
             setFont();
             }
       }
@@ -84,7 +86,7 @@ void Ped::saveConfig()
       xml.intTag("paren", paren);
       if (!fontFamily.isEmpty())
             xml.strTag("fontFamily", fontFamily);
-      if (fontSize > 0)
+      if (fontSize > 0.0)
             xml.doubleTag("fontSize", fontSize);
       xml.intTag("fontWeight", fontWeight);
 
@@ -153,8 +155,13 @@ void Ped::readConfig()
                         ;
                   else if (tag == "fontFamily")
                         fontFamily = e.text();
-                  else if (tag == "fontSize")
+                  else if (tag == "fontSize") {
                         fontSize = e.text().toDouble();
+                        if (fontSize <= 1.0) {
+                              printf("read font size %f <%s>\n", fontSize, qPrintable(e.text()));
+                              fontSize = 14;
+                              }
+                        }
                   else if (tag == "fontWeight")
                         fontWeight = e.text().toInt();
                   else
