@@ -959,7 +959,7 @@ void  Ped::edit_cmd(int cmd, const QString param)
       {
       if (recmode)
             rec_cmd(cmd, param);
-      if (cmd > CMD_MAXCODE) {        // ignore unknown commands
+      if (cmd >= CMD_MAXCODE) {        // ignore unknown commands
             printf("unknown cmd %x\n", cmd);
             return;
             }
