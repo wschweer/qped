@@ -26,8 +26,8 @@ set(CMAKE_CXX_FLAGS  "-std=c++11 -Wall -fno-exceptions -include ${PROJECT_SOURCE
 ADD_EXECUTABLE(qped
       ${moc}
       ped.h editor.h enter.h editwin.h
-      ped.cpp editor.cpp file.cpp help.cpp line.cpp mtext.cpp
-      search.cpp text.cpp tree.cpp enter.cpp
+      ped.cpp editor.cpp file.cpp line.cpp mtext.cpp
+      search.cpp text.cpp enter.cpp
       utils.cpp view.cpp kontext.cpp xml.cpp config.cpp editwin.cpp
       )
 

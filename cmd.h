@@ -9,6 +9,7 @@
 //  the file LICENCE.GPL
 //=============================================================================
 
+const int CMD_INPUT_STRING  = 0x99;
 const int CMD_NEXT          = 0x100;
 const int CMD_BACK          = 0x101;
 const int CMD_UP            = 0x102;

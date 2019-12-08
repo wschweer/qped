@@ -59,6 +59,7 @@ void Ped::configFont()
             fontWeight = font.weight();
             fontSize   = font.pointSize();
             setFont();
+            update();
             }
       }
 

@@ -142,12 +142,6 @@ bool EditWin::event(QEvent* event)
 
       if ((stat & (Qt::CTRL | Qt::ALT)) == 0)
             c = s[0];
-#if 0
-printf("EditWin::event %x\n", e->key());
-      if (s.size()) {
-printf("  text %x\n", c.unicode());
-            }
-#endif
 
       //
       // Umlaute aktivieren
@@ -165,22 +159,6 @@ printf("  text %x\n", c.unicode());
                         break;
                   }
             }
-#if defined(Q_WS_MAC)
-      // Sonderbehandlung:
-      //    zweite Alt-Taste aktivieren:
-      if (stat & Qt::ALT) {
-            switch (e->key()) {
-                  case '8':  c = QLatin1Char('{');  break;
-                  case '5':  c = QLatin1Char('[');  break;
-                  case '6':  c = QLatin1Char(']');  break;
-                  case '9':  c = QLatin1Char('}');  break;
-                  case Qt::Key_Y:  c = QLatin1Char('\\'); break;
-                  case Qt::Key_N:  c = QLatin1Char('~');  break;
-                  case Qt::Key_7:  c = QLatin1Char('|');  break;
-                  case Qt::Key_L:  c = QLatin1Char('@');  break;
-                  }
-            }
-#else
       // Sonderbehandlung:
       //    zweite Alt-Taste aktivieren:
       if (stat & Qt::ALT) {
@@ -195,10 +173,10 @@ printf("  text %x\n", c.unicode());
                   case 'q':  c = QLatin1Char('@');  break;
                   }
             }
-#endif
       if (c.isPrint() || c == QLatin1Char(0x9)) {
-	      (*(editor->kll))->editChar(c);
-            editor->update();
+            ped->edit_cmd(CMD_INPUT_STRING, QString(c));
+//	      (*(editor->kll))->editChar(c);
+//            editor->update();
             return true;
             }
       return false;

@@ -44,16 +44,9 @@ extern QColor fgColor;
 
 struct Cmd {
       int cmd;
-      const char* param;
+      QString param;
 
-      Cmd(int c, const char* p) {
-            cmd = c;
-            param = p ? strdup(p) : 0;
-            }
-      ~Cmd() {
-            if (param)
-                  delete param;
-            }
+      Cmd(int c, QString p) : cmd(c), param(p) {}
       };
 
 typedef std::list<Cmd> CmdList;
@@ -105,7 +98,7 @@ class Ped : public QMainWindow
       QPixmap histVIcon, histBIcon, searchVIcon, searchBIcon;
       QPixmap macroPIcon, macroRIcon, markzIcon, marksIcon;
       QPixmap makeIcon, runIcon, rebuildIcon, debugIcon;
-      QPixmap splithIcon, splitvIcon, toggleTreeIcon;
+      QPixmap splithIcon, splitvIcon;
 
       int update_flags;
       int recmode;
@@ -138,9 +131,6 @@ class Ped : public QMainWindow
 
       void goMenue();
       void goSelect(QAction*);
-      void helpCommands();
-      void helpQt();
-      void helpAbout();
 
       void toggleColorify();
       void toggleParen();
@@ -159,7 +149,6 @@ class Ped : public QMainWindow
 
       void splitHorizontal();
       void splitVertical();
-      void toggleTree();
       void editCmd(QAction*);
 
    public slots:
@@ -180,8 +169,7 @@ class Ped : public QMainWindow
       void configFont();
       void saveConfig();
       void removeMsg();
-      void edit_cmd(int cmd);
-      void edit_cmd(int cmd, const char*);
+      void edit_cmd(int, const QString s = QString());
 
    public:
       double fw() const { return _fw; }
@@ -214,7 +202,7 @@ class Ped : public QMainWindow
       void goto_kontext(int k, int l);
       void enterInput(QString s);
       void play_cmd();
-      void rec_cmd(int cmd, const char* param);
+      void rec_cmd(int cmd, QString);
       void edit_print(const QString&);
       void msg(int timeout, const QString&);
       void edit(const QChar&);

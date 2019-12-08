@@ -16,7 +16,6 @@
 #include "text.h"
 #include "enter.h"
 #include "cmd.h"
-#include "tree.h"
 #include "xml.h"
 #include "editwin.h"
 
@@ -106,9 +105,6 @@ void Ped::genFileToolbar()
 
       a = tools->addAction(splitvIcon, "split window vertical");
       connect(a, SIGNAL(triggered()), SLOT(splitVertical()));
-
-      a = tools->addAction(toggleTreeIcon, "show/hide tree");
-      connect(a, SIGNAL(triggered()), SLOT(toggleTree()));
 
       tools->addSeparator();
 
@@ -409,7 +405,7 @@ Ped::Ped(int argc, char** argv)
 
       cur_editor->setStartupMode(true);
       for (int i = 0; i < argc; i++)
-            edit_cmd(CMD_NEW_ALTFIL, argv[i]);
+            edit_cmd(CMD_NEW_ALTFIL, QString(argv[i]));
       cur_editor->setStartupMode(false);
 
       geometry_x = 0;
@@ -443,11 +439,9 @@ Ped::Ped(int argc, char** argv)
 void Ped::setFont()
       {
       eefont = QFont(fontFamily);
-//      eefont.setPixelSize(fontSize);
       eefont.setPointSizeF(fontSize);
       eefont.setWeight(fontWeight);
       eefont.setFixedPitch(true);
-//      eefont.setLetterSpacing(QFont::PercentageSpacing, 100);
       QFontMetricsF fm(eefont);
       _fw = fm.averageCharWidth();
       fh = lrint(fm.height());
@@ -476,9 +470,9 @@ void Ped::enterInput(QString s)
 void Ped::removeMsg()
       {
       if (recmode)
-            statusBar()->clearMessage();
-      else
             statusBar()->showMessage("Recording...");
+      else
+            statusBar()->clearMessage();
       }
 
 /*---------------------------------------------------------
@@ -663,15 +657,6 @@ void Ped::editCmd(QAction* a)
       edit_cmd(a->data().toInt());
       }
 
-//---------------------------------------------------------
-//   edit_cmd
-//---------------------------------------------------------
-
-void Ped::edit_cmd(int cmd)
-      {
-      edit_cmd(cmd, 0);
-      }
-
 // bindings for enter popup:
 
 void Ped::cmdEnterSearchF() { leaveEnterInput(CMD_SEARCH_F); }
@@ -702,7 +687,7 @@ void Ped::saveAll()       { edit_cmd(CMD_SAVE_ALL); }
 
 void Ped::load(const QString& name)
       {
-      edit_cmd(CMD_NEW_ALTFIL, name.toLatin1().data());
+      edit_cmd(CMD_NEW_ALTFIL, name);
       }
 
 //---------------------------------------------------------
@@ -931,17 +916,15 @@ void Ped::set_line_column_var()
 
 void Ped::play_cmd()
       {
-      iCmdList i;
-      for (i = cmd_list.begin(); i != cmd_list.end(); ++i) {
+      for (auto i = cmd_list.begin(); i != cmd_list.end(); ++i)
             edit_cmd(i->cmd, i->param);
-            }
       }
 
 //---------------------------------------------------------
 //   rec_cmd
 //---------------------------------------------------------
 
-void Ped::rec_cmd(int cmd, const char* param)
+void Ped::rec_cmd(int cmd, QString param)
       {
       if (cmd == CMD_RECORD || cmd == CMD_PLAY)
             return;
@@ -961,7 +944,7 @@ void Ped::edit_print(const QString& s)
       for (int i = 0; i < s.size(); ++i) {
             QChar c = s[i];
             if (c == QLatin1Char('\n'))
-                  edit_cmd(CMD_NEWLINE, "");
+                  edit_cmd(CMD_NEWLINE);
             else
                   edit(c);
             }
@@ -972,7 +955,7 @@ void Ped::edit_print(const QString& s)
 //   edit_cmd
 //---------------------------------------------------------
 
-void  Ped::edit_cmd(int cmd, const char* param)
+void  Ped::edit_cmd(int cmd, const QString param)
       {
       if (recmode)
             rec_cmd(cmd, param);
@@ -1028,7 +1011,7 @@ void  Ped::edit_cmd(int cmd, const char* param)
                   }
             return;
             }
-      switch(cmd) {
+      switch (cmd) {
             case CMD_ENTER_INPUT:
                   enterInput("");
                   return;

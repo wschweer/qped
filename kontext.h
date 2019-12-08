@@ -79,6 +79,7 @@ class Kontext {
       static MtextEditFunction mfkt[];
 
       void cmd_scroll_up(const QString&)   { yscroll(1); }
+      void cmd_input_string(const QString&);
       void cmd_scroll_down(const QString&) { yscroll(-1); }
       void cmd_next(const QString&)        { rxposition(1); }
       void cmd_back(const QString&)        { rxposition(-1); }

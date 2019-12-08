@@ -26,6 +26,7 @@ typedef void (Kontext::*Fkt)(const QString& s);
 #define F(x)  (Fkt)(&Kontext::x)
 
 Kontext::TextEditFunction Kontext::fkt[] = {
+      { CMD_INPUT_STRING, F(cmd_input_string), },
       { CMD_SCROLL_UP,    F(cmd_scroll_up),   },
       { CMD_SCROLL_DOWN,  F(cmd_scroll_down), },
       { CMD_NEXT,         F(cmd_next),        },
@@ -101,13 +102,26 @@ void Kontext::editChar(const QChar& c)
       }
 
 //---------------------------------------------------------
+//   cmd_input_string
+//---------------------------------------------------------
+
+void Kontext::cmd_input_string(const QString& s)
+      {
+      for (QChar c : s) {
+//            if (c == QLatin1Char('\n'))
+//                  edit_cmd(CMD_NEWLINE);
+//            else
+                  editChar(c);
+            }
+      }
+
+//---------------------------------------------------------
 //	Kontext::edit
 //---------------------------------------------------------
 
 bool Kontext::edit(int cmd, const QString& param)
       {
       bool auto_indent_save = auto_indent;
-//      auto_indent = true;         // why?
 
       for (const TextEditFunction* fk = fkt; fk->cmd; ++fk) {
             if (fk->cmd == cmd) {
@@ -143,24 +157,6 @@ bool Kontext::edit(int cmd, const QString& param)
                   }
             ++mfptr;
             }
-#if 0
-      if (cmd < 0x100) {
-            if (mark_mode != MARK_NONE) {        // Abort Mark-Mode
-                  pos = mpos1;
-                  adjust_cursor();
-                  register_update(UPDATE_ALL);
-                  mark_mode = MARK_NONE;
-                  auto_indent = auto_indent_save;
-                  return true;
-                  }
-            f->undo_start(&pos);
-            if (insert_flag)
-                  insert_char(cmd);
-            else
-                  put_char(cmd);
-            f->undo_end(&pos);
-            }
-#endif
       mark_mode = MARK_NONE;
       auto_indent = auto_indent_save;
       return false;
