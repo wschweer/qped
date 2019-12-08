@@ -15,7 +15,20 @@
 #include "cmd.h"
 #include "utils.h"
 #include "editwin.h"
-#include "gettag.h"
+
+//---------------------------------------------------------
+//   Link
+//---------------------------------------------------------
+
+class Link {
+      QString _url;
+      int _line;
+
+   public:
+      Link(const QString& s, int l) : _url(s), _line(l) {}
+      QString url() const { return _url; }
+      int line() const { return _line; }
+      };
 
 #define FONT_TEXT 0
 
