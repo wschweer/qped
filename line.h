@@ -12,8 +12,8 @@
 #ifndef __line_h__
 #define __line_h__
 
-#define INDENT_NORMAL 0
-#define INDENT_C 1
+#define INDENT_NORMAL   0
+#define INDENT_C        1
 
 //---------------------------------------------------------
 //    class Line

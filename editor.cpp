@@ -126,13 +126,11 @@ void Editor::saveStatus(Xml& xml, const char* name)
       int nn = 0;
       for (iKontextListList k = kll.begin(); k != kll.end(); ++k, ++nn) {
             xml.tag("KontextList");
-            KontextList* kl = *k;
-            int n = 0;
-            for (iKontextList i = kl->begin(); i != kl->end(); ++i, ++n) {
+            for (auto i : **k) {
                   xml.tag("Kontext");
-                  xml.strTag("path", (*i)->path());
+                  xml.strTag("path", i->path());
             	int column, line, xoff, yoff;
-            	(*i)->getpos(column, line, xoff, yoff);
+            	i->getpos(column, line, xoff, yoff);
                   xml.intTag("column", column);
                   xml.intTag("line", line);
                   xml.intTag("xoff", xoff);
@@ -346,28 +344,28 @@ int Editor::file(const QString& u, bool flag, Position* pos)
       File* file       = 0;
 
       struct Ftype {
-            const char* const extension;
+            const char* extension;
             FileType  type;
-            Ftype(const char* const e, FileType t) : extension(e), type(t) {}
             };
 
-      static struct Ftype ftypes[] = {
-            Ftype("cc",  FILE_C),
-            Ftype("cpp", FILE_C),
-            Ftype("m",   FILE_C),
-            Ftype("mm",  FILE_C),
-            Ftype("c",   FILE_C),
-            Ftype("C",   FILE_C),
-            Ftype("h",   FILE_H),
-            Ftype("qml", FILE_QML),
+      static constexpr struct Ftype ftypes[] = {
+            { "cc",  FILE_C },
+            { "cpp", FILE_C },
+            { "m",   FILE_C },
+            { "mm",  FILE_C },
+            { "c",   FILE_C },
+            { "C",   FILE_C },
+            { "h",   FILE_H },
+            { "hpp", FILE_H },
+            { "qml", FILE_QML },
             };
 
       QString suffix = fi.suffix();
 
       FileType ftype = FILE_UNKNOWN;
-      for (unsigned i = 0; i < sizeof(ftypes)/sizeof(*ftypes); ++i) {
-         	if (suffix == ftypes[i].extension) {
-                  ftype = ftypes[i].type;
+      for (const Ftype& ft : ftypes) {
+         	if (suffix == ft.extension) {
+                  ftype = ft.type;
                   break;
                   }
             }
@@ -594,9 +592,8 @@ void Editor::updateVScrollbar()
 
 void Editor::hScrollTo(int val)
       {
-      if ((*kll)->xscrollto(val)) {
+      if ((*kll)->xscrollto(val))
             (*kll)->update();
-            }
       }
 
 //---------------------------------------------------------

@@ -174,7 +174,7 @@ struct ActionList {
 #define CONTROL   Qt::ControlModifier
 #endif
 
-static ActionList editActions[] = {
+static const ActionList editActions[] = {
       { CMD_SAVE_EXIT,    Qt::Key_F1 },
       { CMD_QUIT,         Qt::Key_F1 + Qt::SHIFT },
       { CMD_BACK_HIST,    Qt::Key_F2 },
@@ -189,8 +189,6 @@ static ActionList editActions[] = {
       { CMD_BACK,         Qt::Key_Left  },
       { CMD_PAGE_UP,      Qt::Key_PageUp },
       { CMD_PAGE_DOWN,    Qt::Key_PageDown },
-//      { CMD_UP,           Qt::Key_Up },
-//      { CMD_DOWN,         Qt::Key_Down },
       { CMD_VIEW_TOGGLE,  Qt::Key_Up + CONTROL },
       { CMD_VIEW_TOGGLE,  Qt::Key_Down + CONTROL },
       { CMD_START_LINE,   Qt::Key_Home },
