@@ -234,7 +234,7 @@ int Kontext::generate_cview(LineList* dst, LineList* src, int zl)
       LinePos p(src, src->begin(), 0, 0);
 
       while (!(*p).isNull()) {
-            if (*p == '#') {        // Pr�r-Zeile
+            if (*p == '#') {        // Präprozessor-Zeile
                   ++p;
                   while (*p == ' ' || *p == '\t')
                         ++p;
@@ -254,9 +254,12 @@ int Kontext::generate_cview(LineList* dst, LineList* src, int zl)
                   clevel = -1;
                   }
             if (p.match("class")) {
-                  add_line(dst, p);
-                  if (p.line() <= zl)
-                        view_zl = dst->size() - 1;
+                  QString s = p.cur_line()->text();
+                  if (!s.endsWith(';')) {
+                        add_line(dst, p);
+                        if (p.line() <= zl)
+                              view_zl = dst->size() - 1;
+                        }
                   }
             else if (p.match("struct")) {
                   add_line(dst, p);

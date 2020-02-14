@@ -123,9 +123,7 @@ class iLine {
       void restline(Line*);
       friend bool operator==(iLine& ln, const char* txt);
       bool eol();
-      const char* txt() const {
-            return l->txt.toLatin1().data() + p;
-            }
+      const char* txt() const { return l->txt.toLatin1().data() + p; }
       bool match(const char*) const;
       };
 
