@@ -206,7 +206,6 @@ static const ActionList editActions[] = {
       { CMD_UNDELETE,     Qt::Key_F9 + Qt::SHIFT},
       { CMD_PLAY,         Qt::Key_F10 },
       { CMD_RECORD,       Qt::Key_F10 + Qt::SHIFT},
-      { CMD_INSERTMODE,   Qt::Key_Insert },
       { CMD_RUBOUT,       Qt::Key_Delete },
 
       { CMD_START_LINE,   QKeySequence(Qt::Key_Q + CONTROL, Qt::Key_S + CONTROL) },

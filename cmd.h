@@ -44,7 +44,6 @@ enum {
       CMD_SAVE_ALL,
       CMD_CKLAMMER,
       CMD_CKOMPOUND,
-      CMD_INSERTMODE,
       CMD_LINE_MARK,
       CMD_COLUMN_MARK,
       CMD_SEARCH_F,

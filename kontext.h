@@ -112,7 +112,6 @@ class Kontext {
       void searchF(const QString& param);
       void searchR(const QString& param);
       void do_replace(Line*, const LinePos&, const LinePos&, const char*);
-      void insertmode();
 
       void adjust_pos(int, int);
       void adjust_cursor();

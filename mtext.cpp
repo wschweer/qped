@@ -298,16 +298,6 @@ void Kontext::insert_special(int code)
       printf("insert %d\n", code);
       }
 
-//---------------------------------------------------------
-//    Kontext::insertmode
-//---------------------------------------------------------
-
-void Kontext::insertmode()
-      {
-      insert_flag = !insert_flag;
-      ped->insertLabel->setText(QString(insert_flag ? "I" : "O"));
-      }
-
 /*---------------------------------------------------------
  *    Kontext::insert_char
  *---------------------------------------------------------*/

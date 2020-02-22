@@ -85,7 +85,6 @@ Kontext::MtextEditFunction Kontext::mfkt[] = {
       { CMD_INS_SPECIAL,  F(insert_special), false},
       { CMD_SEARCH_F,     F(searchF),        false},
       { CMD_SEARCH_R,     F(searchR),        false},
-      { CMD_INSERTMODE,   F(insertmode),     false},
       };
 #undef F
 
