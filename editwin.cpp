@@ -134,7 +134,7 @@ void EditWin::keyPressEvent(QKeyEvent* e)
       QString s(e->text());
       Qt::KeyboardModifiers stat = e->modifiers();
       QChar c = 0;
-      printf("==key 0x%x %d <%s>\n", e->key(), e->key(), qPrintable(s));
+//      printf("==key 0x%x %d <%s>\n", e->key(), e->key(), qPrintable(s));
 
       if (!s.isEmpty() && ((stat & (Qt::CTRL | Qt::ALT)) == 0))
             c = s[0];
