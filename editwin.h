@@ -28,7 +28,7 @@ class EditWin : public QFrame
       Editor* editor;
 
       virtual void paintEvent(QPaintEvent* e) override;
-      virtual void keyPressEvent(QKeyEvent* event) override;
+      virtual bool event(QEvent* event) override;
       virtual void focusInEvent(QFocusEvent*e) override;
       virtual void wheelEvent(QWheelEvent*) override;
 

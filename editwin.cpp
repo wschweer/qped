@@ -126,27 +126,34 @@ void EditWin::paintEvent(QPaintEvent* e)
       }
 
 //---------------------------------------------------------
-//   keyPressEvent
+//   event
+//      we cannot use keyPressEvent() here bc. it grabs tab
 //---------------------------------------------------------
 
-void EditWin::keyPressEvent(QKeyEvent* e)
+bool EditWin::event(QEvent* event)
       {
+      if (event->type() != QEvent::KeyPress)
+            return QWidget::event(event);
+
+      QKeyEvent* e = static_cast<QKeyEvent*>(event);
+
       QString s(e->text());
       Qt::KeyboardModifiers stat = e->modifiers();
       QChar c = 0;
-//      printf("==key 0x%x %d <%s>\n", e->key(), e->key(), qPrintable(s));
 
       if (!s.isEmpty() && ((stat & (Qt::CTRL | Qt::ALT)) == 0))
             c = s[0];
+
+//      printf("==key 0x%x %d <%s>\n", e->key(), e->key(), qPrintable(s));
 
       // handle dead keys:           ´
       switch (e->key()) {
             case Qt::Key_Dead_Acute:
                   ped->edit_cmd(CMD_INPUT_STRING, QString(QChar(Qt::Key_acute)));
-                  return;
+                  return true;
             case Qt::Key_Dead_Grave:
                   ped->edit_cmd(CMD_INPUT_STRING, QString(QChar(Qt::Key_QuoteLeft)));
-                  return;
+                  return true;
             default:
                   break;
             }
@@ -182,6 +189,7 @@ void EditWin::keyPressEvent(QKeyEvent* e)
             }
       if (c.isPrint() || c == QLatin1Char(0x9))
             ped->edit_cmd(CMD_INPUT_STRING, QString(c));
+      return true;
       }
 
 //---------------------------------------------------------
