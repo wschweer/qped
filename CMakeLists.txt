@@ -21,7 +21,7 @@ find_package(Qt5 COMPONENTS Widgets Xml)
 # QT5_WRAP_CPP(qped moc ped.h editor.h enter.h editwin.h)
 
 
-set(CMAKE_CXX_FLAGS  "-std=c++11 -Wall -fno-exceptions -include ${PROJECT_SOURCE_DIR}/all.h")
+set(CMAKE_CXX_FLAGS  "-std=c++17 -g -Wall -fno-exceptions -include ${PROJECT_SOURCE_DIR}/all.h")
 
 ADD_EXECUTABLE(qped
       ${moc}

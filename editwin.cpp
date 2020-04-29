@@ -126,23 +126,30 @@ void EditWin::paintEvent(QPaintEvent* e)
       }
 
 //---------------------------------------------------------
-//   event
+//   keyPressEvent
 //---------------------------------------------------------
 
-bool EditWin::event(QEvent* event)
+void EditWin::keyPressEvent(QKeyEvent* e)
       {
-      if (event->type() != QEvent::KeyPress)
-            return QWidget::event(event);
-
-      QKeyEvent* e = (QKeyEvent*)event;
-
       QString s(e->text());
       Qt::KeyboardModifiers stat = e->modifiers();
-      QChar c;
+      QChar c = 0;
+      printf("==key 0x%x %d <%s>\n", e->key(), e->key(), qPrintable(s));
 
-      if ((stat & (Qt::CTRL | Qt::ALT)) == 0)
+      if (!s.isEmpty() && ((stat & (Qt::CTRL | Qt::ALT)) == 0))
             c = s[0];
 
+      // handle dead keys:           ´
+      switch (e->key()) {
+            case Qt::Key_Dead_Acute:
+                  ped->edit_cmd(CMD_INPUT_STRING, QString(QChar(Qt::Key_acute)));
+                  return;
+            case Qt::Key_Dead_Grave:
+                  ped->edit_cmd(CMD_INPUT_STRING, QString(QChar(Qt::Key_QuoteLeft)));
+                  return;
+            default:
+                  break;
+            }
       //
       // Umlaute aktivieren
       //
@@ -173,13 +180,8 @@ bool EditWin::event(QEvent* event)
                   case 'q':  c = QLatin1Char('@');  break;
                   }
             }
-      if (c.isPrint() || c == QLatin1Char(0x9)) {
+      if (c.isPrint() || c == QLatin1Char(0x9))
             ped->edit_cmd(CMD_INPUT_STRING, QString(c));
-//	      (*(editor->kll))->editChar(c);
-//            editor->update();
-            return true;
-            }
-      return false;
       }
 
 //---------------------------------------------------------
@@ -190,7 +192,7 @@ void EditWin::wheelEvent(QWheelEvent* we)
       {
       int amount = we->modifiers() & Qt::ShiftModifier ? 8 : 2;
       for (int i = 0; i < amount; ++i) {
-            ped->edit_cmd(we->delta() > 0 ? CMD_SCROLL_DOWN : CMD_SCROLL_UP);
+            ped->edit_cmd(we->angleDelta().y() > 0 ? CMD_SCROLL_DOWN : CMD_SCROLL_UP);
             (*(editor->kll))->register_update(UPDATE_ALL);
             }
       }

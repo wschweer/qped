@@ -356,6 +356,7 @@ int Editor::file(const QString& u, bool flag, Position* pos)
             { "c",   FILE_C },
             { "C",   FILE_C },
             { "h",   FILE_H },
+            { "hh",  FILE_H },
             { "hpp", FILE_H },
             { "qml", FILE_QML },
             };
@@ -461,7 +462,7 @@ void Editor::updateCurDir()
       {
       QFileInfo fi((*kll)->path());
 
-      ped->cur_dir = fi.absolutePath();
+      ped->cur_dir.setPath(fi.absolutePath());
       }
 
 //---------------------------------------------------------

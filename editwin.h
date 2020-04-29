@@ -27,16 +27,16 @@ class EditWin : public QFrame
       Ped* ped;
       Editor* editor;
 
-      virtual void paintEvent(QPaintEvent* e);
-      virtual bool event(QEvent* event);
-      virtual void focusInEvent(QFocusEvent*e);
-      virtual void wheelEvent(QWheelEvent*);
+      virtual void paintEvent(QPaintEvent* e) override;
+      virtual void keyPressEvent(QKeyEvent* event) override;
+      virtual void focusInEvent(QFocusEvent*e) override;
+      virtual void wheelEvent(QWheelEvent*) override;
 
    protected:
-      void mousePressEvent(QMouseEvent*);
-      void mouseReleaseEvent(QMouseEvent*);
-      void mouseMoveEvent(QMouseEvent*);
-      void mouseDoubleClickEvent(QMouseEvent* e);
+      void mousePressEvent(QMouseEvent*) override;
+      void mouseReleaseEvent(QMouseEvent*) override;
+      void mouseMoveEvent(QMouseEvent*) override;
+      void mouseDoubleClickEvent(QMouseEvent* e) override;
 
    public:
       int cy;
