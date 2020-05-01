@@ -280,6 +280,8 @@ int Kontext::generate_cview(LineList* dst, LineList* src, int zl)
                               break;
                         case '}':         // zugehende Kompound-Klammer
                               clevel--;
+                              if (clevel < 0)   //  namespace?
+                                    clevel = 0;
                               break;
                         case '(':
                         case ')':
@@ -436,6 +438,8 @@ char* Kontext::findProc(LinePos& p, int line)
                         break;
                   case '}':         // zugehende Kompound-Klammer
                         clevel--;
+                        if (clevel < 0)
+                              clevel = 0;
                         break;
                   case '(':
                   case ')':
