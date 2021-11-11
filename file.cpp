@@ -45,6 +45,7 @@ int File::tabl() const
       {
       switch(_type) {
             case FILE_QML:    return 4;
+            case FILE_TEX:    return 4;
             default:          return 6;
             }
       }
@@ -168,13 +169,24 @@ void File::save(const char* name)
             f.close();
             return;
             }
-      QTemporaryFile temp(_fi.path() + "/PEDXXXXXX");
-      temp.setAutoRemove(false);
-      if (!temp.open()) {
-             QString s = QString("Open Temp File\n") + temp.fileName() + QString("\nfailed: ")
-               + QString(strerror(errno));
-            QMessageBox::critical(0, QString("Ped: Open Temp"), s);
-            return;
+      QDir tmpDir(_fi.path());
+      QFile temp;
+      for (int i = 0; i < 1000; ++i) {
+            QString tmpName = QString("PED%1").arg(i);
+            if (!tmpDir.exists(tmpName)) {
+                  temp.setFileName(tmpDir.absolutePath() + "/" + tmpName);
+                  if (!temp.open(QIODevice::ReadWrite)) {
+                        QString s = QString("Open Temp File\n") + temp.fileName() + QString("\nfailed: ")
+                           + QString(strerror(errno));
+                        QMessageBox::critical(0, QString("Ped: Open Temp"), s);
+                        return;
+                        }
+                  break;
+                  }
+            if (i == 999) {
+                  QMessageBox::critical(0, QString("Ped:: Create Temp"), QString("cannot create tmp file"));
+                  return;
+                  }
             }
       QTextStream os(&temp);
       if (utf8)

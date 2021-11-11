@@ -693,11 +693,8 @@ void Kontext::view_toggle()
                   case FILE_C:
                   case FILE_H:
                   case FILE_QML:
-                        pos.zeile = generate_cview(&kollaps_list, text,
-                           pos.zeile);
+                        pos.zeile = generate_cview(&kollaps_list, text, pos.zeile);
                         break;
-                  case FILE_TEXT:
-                  case FILE_UNKNOWN:
                   default:
                         return;
                   }

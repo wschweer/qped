@@ -359,6 +359,7 @@ int Editor::file(const QString& u, bool flag, Position* pos)
             { "hh",  FILE_H },
             { "hpp", FILE_H },
             { "qml", FILE_QML },
+            { "tex", FILE_TEX },
             };
 
       QString suffix = fi.suffix();

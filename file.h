@@ -18,7 +18,7 @@ class Editor;
 class SubscriberList;
 
 enum FileType {FILE_UNKNOWN, FILE_TEXT, FILE_GRAFIK, FILE_C,
-   FILE_MAN, FILE_H, FILE_HTML, FILE_QML};
+   FILE_MAN, FILE_H, FILE_HTML, FILE_QML, FILE_TEX};
 
 // KONTEXT_LINES must be less than (window_height / 2) - 1
 
