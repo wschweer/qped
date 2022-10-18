@@ -65,7 +65,7 @@ void Xml::nput(const char* format, ...)
 void Xml::tdata(const QString& s)
       {
       putLevel();
-      *this << s << endl;
+      *this << s << Qt::endl;
       }
 
 //---------------------------------------------------------
@@ -81,7 +81,7 @@ void Xml::tag(const char* format, ...)
       vsnprintf(buffer, BS, format, args);
     	*this << buffer;
       va_end(args);
-      *this << '>' << endl;
+      *this << '>' << Qt::endl;
       ++level;
       }
 
@@ -94,7 +94,7 @@ void Xml::tagE(const char* format, ...)
       vsnprintf(buffer, BS, format, args);
     	*this << buffer;
       va_end(args);
-      *this << "/>" << endl;
+      *this << "/>" << Qt::endl;
       }
 
 //---------------------------------------------------------
@@ -110,7 +110,7 @@ void Xml::etag(const char* format, ...)
       vsnprintf(buffer, BS, format, args);
     	*this << buffer;
       va_end(args);
-      *this << '>' << endl;
+      *this << '>' << Qt::endl;
       --level;
       }
 
