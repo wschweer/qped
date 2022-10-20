@@ -16,5 +16,9 @@ t:    qped
 d:
 	gdb build/qped core
 
+install:
+	cp build/qped $(HOME)/bin
+
+
 
 

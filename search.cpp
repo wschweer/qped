@@ -20,7 +20,6 @@
 
 bool Kontext::initSearch(const QString& param)
       {
-#if 0  // TODO
       QString pattern, replace;
 
       int idx = param.lastIndexOf(QChar('/', 0));
@@ -33,7 +32,7 @@ bool Kontext::initSearch(const QString& param)
             replace = "";
             }
       if (idx > 0 && pattern[idx-1] == QChar('\\', 0))
-            pattern.remove(idx-1);
+            pattern.remove(idx-1, 1);
       if (!pattern.isEmpty())
             ped->searchPattern.setPattern(pattern);
       if (ped->searchPattern.pattern().isEmpty())
@@ -45,7 +44,6 @@ bool Kontext::initSearch(const QString& param)
             return false;
             }
       ped->replace = replace;
-#endif
       return true;
       }
 
