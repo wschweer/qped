@@ -12,6 +12,10 @@
 #ifndef __line_h__
 #define __line_h__
 
+#include <list>
+#include <QString>
+#include <QTextStream>
+
 #define INDENT_NORMAL   0
 #define INDENT_C        1
 

@@ -9,6 +9,9 @@
 //  the file LICENCE.GPL
 //=============================================================================
 
+#include <QMessageBox>
+#include <QClipboard>
+
 #include "ped.h"
 #include "line.h"
 #include "file.h"
@@ -156,9 +159,9 @@ void File::save(const char* name)
                   }
             QTextStream os(&f);
             if (utf8)
-                  os.setCodec(QTextCodec::codecForName("utf8"));
+                  os.setEncoding(QStringConverter::Utf8);
             else if (isoLatin)
-                  os.setCodec(QTextCodec::codecForName("latin1"));
+                  os.setEncoding(QStringConverter::Latin1);
             top.write(os);
             if (f.error()) {
                   QString s = QString("Write Temp File\n") + f.fileName() + QString("\nfailed: ")
@@ -190,9 +193,9 @@ void File::save(const char* name)
             }
       QTextStream os(&temp);
       if (utf8)
-            os.setCodec(QTextCodec::codecForName("utf8"));
+            os.setEncoding(QStringConverter::Utf8);
       else if (isoLatin)
-            os.setCodec(QTextCodec::codecForName("latin1"));
+            os.setEncoding(QStringConverter::Latin1);
 
       top.write(os);
       if (temp.error()) {

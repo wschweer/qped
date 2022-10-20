@@ -45,7 +45,7 @@ Editor::Editor(QWidget* parent, Ped* p)
 
       QVBoxLayout* tgrid = new QVBoxLayout(this);
       tgrid->setSpacing(0);
-      tgrid->setMargin(0);
+      tgrid->setContentsMargins(0, 0, 0, 0);
 
       fb      = new TabBar(this);
       stack   = new QStackedWidget(this);
@@ -55,7 +55,7 @@ Editor::Editor(QWidget* parent, Ped* p)
       eframe  = new QWidget(stack);
       grid    = new QGridLayout(eframe);
       grid->setSpacing(0);
-      grid->setMargin(0);
+      grid->setContentsMargins(0, 0, 0, 0);
 
       hScroll = new QScrollBar(Qt::Horizontal, eframe);
       vScroll = new QScrollBar(Qt::Vertical, eframe);

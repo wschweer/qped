@@ -107,10 +107,12 @@ void HistoryLineEdit::keyPressEvent(QKeyEvent* ev)
 
 void HistoryLineEdit::wheelEvent(QWheelEvent *ev)
       {
+#if 0 // TODO
       if ( ev->delta() > 0 )
             previous_line();
       else
             next_line();
+#endif
       }
 
 void HistoryLineEdit::previous_line()
@@ -165,8 +167,10 @@ int HistoryLineEdit::word_start() const
 {
     // lastIndexOf returns the index of the last space or -1 if there are no spaces
     // so that + 1 returns the index of the character starting the word or 0
-    int after_space = text().leftRef(cursorPosition()).lastIndexOf(' ') + 1;
-    if ( text().rightRef(text().size()-after_space).startsWith(completion_prefix) )
+//    int after_space = text().leftRef(cursorPosition()).lastIndexOf(' ') | 1;
+    int after_space = text().left(cursorPosition()).lastIndexOf(' ') | 1;
+//    if ( text().rightRef(text().size()-after_space).startsWith(completion_prefix) )
+    if ( text().right(text().size()-after_space).startsWith(completion_prefix) )
         after_space += completion_prefix.size();
     return after_space;
 }

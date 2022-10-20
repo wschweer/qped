@@ -13,6 +13,9 @@
 #include "xml.h"
 #include "editwin.h"
 
+#include <QColorDialog>
+#include <QFontDialog>
+
 QColor fgColor(0, 0, 0);
 QColor bgColor(240, 240, 240);
 QString configFilename(".q4ped");
@@ -51,7 +54,7 @@ void Ped::configFont()
       {
       QFont old_font(fontFamily);
       old_font.setPointSizeF(fontSize);
-      old_font.setWeight(fontWeight);
+//TODO      old_font.setWeight(fontWeight);
       bool flag;
       QFont font = QFontDialog::getFont(&flag, old_font, 0, "select font", QFontDialog::MonospacedFonts);
       if (flag) {

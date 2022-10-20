@@ -9,6 +9,11 @@
 //  the file LICENCE.GPL
 //=============================================================================
 
+#include <QMouseEvent>
+#include <QClipboard>
+#include <QApplication>
+#include <QPainter>
+
 #include "editwin.h"
 #include "ped.h"
 #include "cmd.h"
@@ -139,7 +144,7 @@ bool EditWin::event(QEvent* event)
 
       QString s(e->text());
       Qt::KeyboardModifiers stat = e->modifiers();
-      QChar c = 0;
+      QChar c = QChar(0);
 
       if (!s.isEmpty() && ((stat & (Qt::CTRL | Qt::ALT)) == 0))
             c = s[0];
@@ -229,7 +234,7 @@ void EditWin::mousePressEvent(QMouseEvent* e)
       mouseButton = e->button();
       int x = e->x();
       int y = e->y();
-      if (mouseButton == Qt::MidButton) {
+      if (mouseButton == Qt::MiddleButton) {
             QClipboard* cb = QApplication::clipboard();
             QString txt = cb->text(QClipboard::Clipboard);
             if (!txt.isEmpty()) {

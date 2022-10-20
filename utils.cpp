@@ -9,6 +9,14 @@
 //  the file LICENCE.GPL
 //=============================================================================
 
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <cstdlib>
+
+#include <QDir>
+
+
 //---------------------------------------------------------
 //   xgets
 //    wie fgets, nur werden nachlaufende '\n' '\r' und ' '

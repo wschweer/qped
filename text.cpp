@@ -9,6 +9,9 @@
 //  the file LICENCE.GPL
 //=============================================================================
 
+#include <QClipboard>
+#include <QApplication>
+
 #include "line.h"
 #include "text.h"
 #include "ped.h"
@@ -1116,7 +1119,7 @@ QChar Kontext::colorBraceV(QChar sbrace, int& px, int& py)
                               break;
                         if (c == '\n') {
                               if (p.line() >= mz)      // sichtbar?
-                                    return 0;
+                                    return QChar(0);
                               }
                         }
                   }
@@ -1130,7 +1133,7 @@ QChar Kontext::colorBraceV(QChar sbrace, int& px, int& py)
                               break;
                         if (c == '\n') {
                               if (p.line() >= mz)      // sichtbar?
-                                    return 0;
+                                    return QChar(0);
                               }
                         }
                   }
@@ -1140,7 +1143,7 @@ QChar Kontext::colorBraceV(QChar sbrace, int& px, int& py)
                         while (!(c = *p++).isNull()) {
                               if (c == '\n') {
                                     if (p.line() >= mz)      // sichtbar?
-                                          return 0;
+                                          return QChar(0);
                                     break;
                                     }
                               }
@@ -1154,7 +1157,7 @@ QChar Kontext::colorBraceV(QChar sbrace, int& px, int& py)
                                     }
                               if (c == '\n') {
                                     if (p.line() >= mz)      // sichtbar?
-                                          return 0;
+                                          return QChar(0);
                                     }
                               }
                         }
@@ -1173,7 +1176,7 @@ QChar Kontext::colorBraceV(QChar sbrace, int& px, int& py)
                         int x = p.col() - pos.xoffset;
                         if (x < 0 || x >= spalten()
                            || y < 0 || y >= zeilen()) {
-                              return 0;
+                              return QChar(0);
                               }
                         py = y;
                         px = x;
@@ -1182,10 +1185,10 @@ QChar Kontext::colorBraceV(QChar sbrace, int& px, int& py)
                   }
             else if (c == '\n') {
                   if (p.line() >= mz)      // sichtbar?
-                        return 0;
+                        return QChar(0);
                   }
             }
-      return 0;
+      return QChar(0);
       }
 
 //---------------------------------------------------------
@@ -1194,7 +1197,7 @@ QChar Kontext::colorBraceV(QChar sbrace, int& px, int& py)
 
 QChar Kontext::colorBraceR(QChar ebrace, int& px, int& py)
       {
-return 0;
+return QChar(0);
 
       QChar c;
       int level = 0;
@@ -1218,7 +1221,7 @@ return 0;
                                     break;
                               if (c == '\n') {
                                     if (p.line() < pos.zeile)
-                                          return 0;
+                                          return QChar(0);
                                     }
                               }
                         break;
@@ -1234,7 +1237,7 @@ return 0;
                                     break;
                               if (c == '\n') {
                                     if (p.line() < pos.zeile)
-                                          return 0;
+                                          return QChar(0);
                                     }
                               }
                         break;
@@ -1266,7 +1269,7 @@ return 0;
                                     }
                               if (c == '\n') {
                                     if (p.line() < pos.zeile)
-                                          return 0;
+                                          return QChar(0);
                                     }
                               }
                         break;
@@ -1282,7 +1285,7 @@ return 0;
                               int x = p.col() - pos.xoffset;
                               if (x < 0 || x >= spalten()
                                  || y < 0 || y >= zeilen())
-                                    return 0;
+                                    return QChar(0);
                               px = x;
                               py = y;
                               return c;
@@ -1295,7 +1298,7 @@ return 0;
                         break;
                   case '\n':
                         if (p.line() < pos.zeile)
-                              return 0;
+                              return QChar(0);
                         {
                         //
                         // vor einen evtl vorhandenen
@@ -1318,7 +1321,7 @@ return 0;
                         break;
                   }
             }
-      return 0;
+      return QChar(0);
       }
 
 //---------------------------------------------------------

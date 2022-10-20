@@ -12,6 +12,10 @@
 #ifndef __editwin_h__
 #define __editwin_h__
 
+#include <QEvent>
+#include <QWidget>
+#include <QFrame>
+
 class Ped;
 class Xml;
 class Editor;

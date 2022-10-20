@@ -12,7 +12,12 @@
 #ifndef __XML_H__
 #define __XML_H__
 
+#include <QRect>
+#include <QDomNode>
 static const int BS = 2048;
+
+class QColor;
+class QWidget;
 
 //---------------------------------------------------------
 //   Xml

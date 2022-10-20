@@ -20,6 +20,7 @@
 
 bool Kontext::initSearch(const QString& param)
       {
+#if 0  // TODO
       QString pattern, replace;
 
       int idx = param.lastIndexOf(QChar('/', 0));
@@ -44,6 +45,7 @@ bool Kontext::initSearch(const QString& param)
             return false;
             }
       ped->replace = replace;
+#endif
       return true;
       }
 

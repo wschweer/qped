@@ -12,6 +12,12 @@
 #ifndef __PED_H__
 #define __PED_H__
 
+#include <QMainWindow>
+#include <QSplitter>
+#include <QLabel>
+#include <QDir>
+#include <QRegExp>
+
 #include "line.h"
 #include "file.h"
 #include "editor.h"

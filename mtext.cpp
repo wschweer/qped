@@ -283,7 +283,7 @@ void Kontext::insert_tab()
       {
       f->undo_type(UNDO_CHANGE_LINE);
       f->undo_line(&*cursor);
-      f->insert_char(&*cursor, pos.spalte, 9);
+      f->insert_char(&*cursor, pos.spalte, QChar(9));
 	rxposition(((pos.spalte  + tabl()) / tabl()) * tabl() - pos.spalte);
 //      printf("INSERT TAB\n");
       register_update(UPDATE_LINE);

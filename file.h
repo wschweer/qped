@@ -12,6 +12,8 @@
 #ifndef __file_h__
 #define __file_h__
 
+#include <QFileInfo>
+
 #include "line.h"
 
 class Editor;

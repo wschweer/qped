@@ -9,31 +9,32 @@
 ##  the file LICENCE.GPL
 ##=============================================================================
 
-cmake_minimum_required(VERSION 2.8)
-project (qped)
+cmake_minimum_required(VERSION 3.16)
+project (qped VERSION 6.0.0 LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD  20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_BUILD_TYPE Debug)
 # set(CMAKE_VERBOSE_MAKEFILE ON)
+
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-find_package(Qt5 COMPONENTS Widgets Xml)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Xml Core5Compat)
 
-# QT5_WRAP_CPP(qped moc ped.h editor.h enter.h editwin.h)
-
-
-set(CMAKE_CXX_FLAGS  "-std=c++17 -g -Wall -fno-exceptions -include ${PROJECT_SOURCE_DIR}/all.h")
+qt6_wrap_cpp(qped_mocs ped.h editor.h enter.h editwin.h)
 
 ADD_EXECUTABLE(qped
-      ${moc}
+      ${qped_mocs}
       ped.h editor.h enter.h editwin.h
       ped.cpp editor.cpp file.cpp line.cpp mtext.cpp
       search.cpp text.cpp enter.cpp
       utils.cpp view.cpp kontext.cpp xml.cpp config.cpp editwin.cpp
       )
 
-qt5_use_modules(qped Widgets Xml)
-
-TARGET_LINK_LIBRARIES(qped ${QT_LIBRARIES})
+target_link_libraries(qped Qt6::Gui Qt6::Widgets Qt6::Xml Qt6::Core5Compat)
+target_compile_options(qped PRIVATE -Wall)
 
 install_targets ( /bin qped )
 

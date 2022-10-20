@@ -12,6 +12,13 @@
 #ifndef __EDITOR_H__
 #define __EDITOR_H__
 
+#include <QTabBar>
+#include <QStackedWidget>
+#include <QGridLayout>
+#include <QScrollBar>
+#include <QDomNode>
+#include <QFile>
+
 #include "kontext.h"
 
 class Ped;

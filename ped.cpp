@@ -11,6 +11,20 @@
 
 #include <cmath>
 #include <unistd.h>
+
+#include <QApplication>
+#include <QDir>
+#include <QMenu>
+#include <QFileSystemModel>
+#include <QFileDialog>
+#include <QStatusBar>
+#include <QToolBar>
+#include <QToolButton>
+#include <QShortcut>
+#include <QCompleter>
+#include <QActionGroup>
+#include <QMenuBar>
+
 #include "ped.h"
 #include "utils.h"
 #include "text.h"
@@ -176,70 +190,70 @@ struct ActionList {
 
 static const ActionList editActions[] = {
       { CMD_SAVE_EXIT,    Qt::Key_F1 },
-      { CMD_QUIT,         Qt::Key_F1 + Qt::SHIFT },
+      { CMD_QUIT,         Qt::Key_F1 | Qt::SHIFT },
       { CMD_BACK_HIST,    Qt::Key_F2 },
-      { CMD_VOR_HIST,     Qt::Key_F2 + Qt::SHIFT },
-      { CMD_VIEW_TOGGLE,  Qt::Key_V + CONTROL },
+      { CMD_VOR_HIST,     Qt::Key_F2 | Qt::SHIFT },
+      { CMD_VIEW_TOGGLE,  Qt::Key_V | CONTROL },
       { CMD_NEXT_KONTEXT, Qt::Key_F3 },
       { CMD_TAB,          Qt::Key_Backtab },
-      { CMD_END_WINDOW,   Qt::Key_End + Qt::SHIFT },
-      { CMD_END_FILE,     Qt::Key_End + CONTROL },
+      { CMD_END_WINDOW,   Qt::Key_End | Qt::SHIFT },
+      { CMD_END_FILE,     Qt::Key_End | CONTROL },
       { CMD_END_LINE,     Qt::Key_End },
       { CMD_NEXT,         Qt::Key_Right },
       { CMD_BACK,         Qt::Key_Left  },
       { CMD_PAGE_UP,      Qt::Key_PageUp },
       { CMD_PAGE_DOWN,    Qt::Key_PageDown },
-      { CMD_VIEW_TOGGLE,  Qt::Key_Up + CONTROL },
-      { CMD_VIEW_TOGGLE,  Qt::Key_Down + CONTROL },
+      { CMD_VIEW_TOGGLE,  Qt::Key_Up | CONTROL },
+      { CMD_VIEW_TOGGLE,  Qt::Key_Down | CONTROL },
       { CMD_START_LINE,   Qt::Key_Home },
-      { CMD_START_FILE,   Qt::Key_Home + CONTROL },
-      { CMD_START_WINDOW, Qt::Key_Home + Qt::SHIFT},
+      { CMD_START_FILE,   Qt::Key_Home | CONTROL },
+      { CMD_START_WINDOW, Qt::Key_Home | Qt::SHIFT},
       { CMD_UNDO,         Qt::Key_F4 },
-      { CMD_REDO,         Qt::Key_F4 + Qt::SHIFT},
+      { CMD_REDO,         Qt::Key_F4 | Qt::SHIFT},
       { CMD_LINE_MARK,    Qt::Key_F5 },
       { CMD_COLUMN_MARK,  Qt::Key_F6 },
       { CMD_SEARCH_F,     Qt::Key_F7 },
-      { CMD_SEARCH_R,     Qt::Key_F7 + Qt::SHIFT},
+      { CMD_SEARCH_R,     Qt::Key_F7 | Qt::SHIFT},
       { CMD_PICK,         Qt::Key_F8 },
       { CMD_PUT,          Qt::Key_F9 },
-      { CMD_UNDELETE,     Qt::Key_F9 + CONTROL },
-      { CMD_UNDELETE,     Qt::Key_F9 + Qt::SHIFT},
+      { CMD_UNDELETE,     Qt::Key_F9 | CONTROL },
+      { CMD_UNDELETE,     Qt::Key_F9 | Qt::SHIFT},
       { CMD_PLAY,         Qt::Key_F10 },
-      { CMD_RECORD,       Qt::Key_F10 + Qt::SHIFT},
+      { CMD_RECORD,       Qt::Key_F10 | Qt::SHIFT},
       { CMD_RUBOUT,       Qt::Key_Delete },
 
-      { CMD_START_LINE,   QKeySequence(Qt::Key_Q + CONTROL, Qt::Key_S + CONTROL) },
-      { CMD_END_LINE,     QKeySequence(Qt::Key_Q + CONTROL, Qt::Key_D + CONTROL) },
-      { CMD_START_FILE,   QKeySequence(Qt::Key_Q + CONTROL, Qt::Key_R + CONTROL) },
-      { CMD_END_FILE,     QKeySequence(Qt::Key_Q + CONTROL, Qt::Key_C + CONTROL) },
-      { CMD_START_WINDOW, QKeySequence(Qt::Key_Q + CONTROL, Qt::Key_E + CONTROL) },
-      { CMD_END_WINDOW,   QKeySequence(Qt::Key_Q + CONTROL, Qt::Key_X + CONTROL) },
-      { CMD_DEL_RESTLINE, QKeySequence(Qt::Key_Q + CONTROL, Qt::Key_Y + CONTROL) },
+      { CMD_START_LINE,   QKeySequence(Qt::Key_Q | CONTROL, Qt::Key_S | CONTROL) },
+      { CMD_END_LINE,     QKeySequence(Qt::Key_Q | CONTROL, Qt::Key_D | CONTROL) },
+      { CMD_START_FILE,   QKeySequence(Qt::Key_Q | CONTROL, Qt::Key_R | CONTROL) },
+      { CMD_END_FILE,     QKeySequence(Qt::Key_Q | CONTROL, Qt::Key_C | CONTROL) },
+      { CMD_START_WINDOW, QKeySequence(Qt::Key_Q | CONTROL, Qt::Key_E | CONTROL) },
+      { CMD_END_WINDOW,   QKeySequence(Qt::Key_Q | CONTROL, Qt::Key_X | CONTROL) },
+      { CMD_DEL_RESTLINE, QKeySequence(Qt::Key_Q | CONTROL, Qt::Key_Y | CONTROL) },
 
-      { CMD_CKLAMMER,     QKeySequence(Qt::Key_K + CONTROL, Qt::Key_K + CONTROL) },
-      { CMD_SAVE_ALL,     QKeySequence(Qt::Key_K + CONTROL, Qt::Key_A + CONTROL) },
-      { CMD_CKOMPOUND,    QKeySequence(Qt::Key_K + CONTROL, Qt::Key_L + CONTROL) },
-      { CMD_SAVE_EXIT,    QKeySequence(Qt::Key_K + CONTROL, Qt::Key_X + CONTROL) },
-      { CMD_QUIT,         QKeySequence(Qt::Key_K + CONTROL, Qt::Key_Q + CONTROL) },
-      { CMD_REDO,         QKeySequence(Qt::Key_K + CONTROL, Qt::Key_U + CONTROL) },
+      { CMD_CKLAMMER,     QKeySequence(Qt::Key_K | CONTROL, Qt::Key_K | CONTROL) },
+      { CMD_SAVE_ALL,     QKeySequence(Qt::Key_K | CONTROL, Qt::Key_A | CONTROL) },
+      { CMD_CKOMPOUND,    QKeySequence(Qt::Key_K | CONTROL, Qt::Key_L | CONTROL) },
+      { CMD_SAVE_EXIT,    QKeySequence(Qt::Key_K | CONTROL, Qt::Key_X | CONTROL) },
+      { CMD_QUIT,         QKeySequence(Qt::Key_K | CONTROL, Qt::Key_Q | CONTROL) },
+      { CMD_REDO,         QKeySequence(Qt::Key_K | CONTROL, Qt::Key_U | CONTROL) },
 
-      { CMD_PAGE_UP,      Qt::Key_R + CONTROL },
-      { CMD_BACK,         Qt::Key_S + CONTROL },
-      { CMD_DEL_WORD,     Qt::Key_T + CONTROL },
-      { CMD_UNDO,         Qt::Key_U + CONTROL },
-      { CMD_SCROLL_UP,    Qt::Key_W + CONTROL },
-      { CMD_DOWN,         Qt::Key_X + CONTROL },
-      { CMD_DEL_LINE,     Qt::Key_Y + CONTROL },
-      { CMD_SCROLL_DOWN,  Qt::Key_Z + CONTROL },
-      { CMD_BACK_WORD,    Qt::Key_A + CONTROL },
-      { CMD_PAGE_DOWN,    Qt::Key_C + CONTROL },
-      { CMD_NEXT,         Qt::Key_D + CONTROL },
-      { CMD_UP,           Qt::Key_E + CONTROL },
-      { CMD_NEXT_WORD,    Qt::Key_F + CONTROL },
-      { CMD_DEL_CHAR,     Qt::Key_G + CONTROL },
-      { CMD_INSERT_LINE,  Qt::Key_N + CONTROL },
-      { CMD_GET_WORD,     QKeySequence(Qt::Key_O + CONTROL, Qt::Key_W + CONTROL) },
-      { CMD_LINK,         QKeySequence(Qt::Key_O + CONTROL, Qt::Key_L + CONTROL) },
+      { CMD_PAGE_UP,      Qt::Key_R | CONTROL },
+      { CMD_BACK,         Qt::Key_S | CONTROL },
+      { CMD_DEL_WORD,     Qt::Key_T | CONTROL },
+      { CMD_UNDO,         Qt::Key_U | CONTROL },
+      { CMD_SCROLL_UP,    Qt::Key_W | CONTROL },
+      { CMD_DOWN,         Qt::Key_X | CONTROL },
+      { CMD_DEL_LINE,     Qt::Key_Y | CONTROL },
+      { CMD_SCROLL_DOWN,  Qt::Key_Z | CONTROL },
+      { CMD_BACK_WORD,    Qt::Key_A | CONTROL },
+      { CMD_PAGE_DOWN,    Qt::Key_C | CONTROL },
+      { CMD_NEXT,         Qt::Key_D | CONTROL },
+      { CMD_UP,           Qt::Key_E | CONTROL },
+      { CMD_NEXT_WORD,    Qt::Key_F | CONTROL },
+      { CMD_DEL_CHAR,     Qt::Key_G | CONTROL },
+      { CMD_INSERT_LINE,  Qt::Key_N | CONTROL },
+      { CMD_GET_WORD,     QKeySequence(Qt::Key_O | CONTROL, Qt::Key_W | CONTROL) },
+      { CMD_LINK,         QKeySequence(Qt::Key_O | CONTROL, Qt::Key_L | CONTROL) },
       { CMD_RUBOUT,       Qt::Key_Backspace },
       { CMD_NEWLINE,      Qt::Key_Return },
       { CMD_ENTER_INPUT,  Qt::Key_Escape },
@@ -274,7 +288,7 @@ Ped::Ped(int argc, char** argv)
 
       connect(ag, SIGNAL(triggered(QAction*)), SLOT(editCmd(QAction*)));
 
-      new QShortcut(Qt::Key_F3 + Qt::SHIFT, this, SLOT(cmdShiftF3()));
+      new QShortcut(Qt::Key_F3 | Qt::SHIFT, this, SLOT(cmdShiftF3()));
 
       colorify       = false;
       paren          = true;
@@ -311,7 +325,7 @@ Ped::Ped(int argc, char** argv)
       QWidget* box      = new QWidget;
       QVBoxLayout* grid = new QVBoxLayout;
       box->setLayout(grid);
-      grid->setMargin(0);
+      grid->setContentsMargins(0, 0, 0, 0);
       grid->setSpacing(0);
 
       //-------------------------------
@@ -328,7 +342,7 @@ Ped::Ped(int argc, char** argv)
       grid->addWidget(enter, 0);
 
       QBoxLayout* layout1 = new QBoxLayout(QBoxLayout::LeftToRight, enter);
-      layout1->setMargin(0);
+      layout1->setContentsMargins(0, 0, 0, 0);
       layout1->setSpacing(0);
 
       QLabel* enterLabel = new QLabel("Enter:", enter);
@@ -437,7 +451,7 @@ void Ped::setFont()
       {
       eefont = QFont(fontFamily);
       eefont.setPointSizeF(fontSize);
-      eefont.setWeight(fontWeight);
+      eefont.setWeight(QFont::Weight(fontWeight));
       eefont.setFixedPitch(true);
       QFontMetricsF fm(eefont);
       _fw = fm.averageCharWidth();
