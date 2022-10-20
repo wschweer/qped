@@ -70,7 +70,7 @@ class Ped : public QMainWindow
       Q_OBJECT
 
       QString fontFamily  { "Bitstream Vera Sans Mono" };
-      int fontWeight      { 50 };
+      QFont::Weight fontWeight  { QFont::Normal };
       qreal fontSize      { 14 };
 
       int tree_width      { 150 };

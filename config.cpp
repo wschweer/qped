@@ -54,7 +54,7 @@ void Ped::configFont()
       {
       QFont old_font(fontFamily);
       old_font.setPointSizeF(fontSize);
-//TODO      old_font.setWeight(fontWeight);
+      old_font.setWeight(fontWeight);
       bool flag;
       QFont font = QFontDialog::getFont(&flag, old_font, 0, "select font", QFontDialog::MonospacedFonts);
       if (flag) {
@@ -92,7 +92,7 @@ void Ped::saveConfig()
             xml.strTag("fontFamily", fontFamily);
       if (fontSize > 0.0)
             xml.doubleTag("fontSize", fontSize);
-      xml.intTag("fontWeight", fontWeight);
+      xml.intTag("fontWeight", int(fontWeight));
 
       xml.etag("PedConfig");
       msg(5000, QString("configuration saved in \"%1\"").arg(f.fileName()));
@@ -107,17 +107,16 @@ void Ped::readConfig()
       QString fname(QDir::homePath() + "/" + configFilename);
       QFile f(fname);
       if (!f.open(QIODevice::ReadOnly)) {
-	    printf("====readConfig failed\n");
             saveConfig();
-//            msg(5000, QString("read config failed: cannot open <%1>: <%2>\n")
-//               .arg(f.fileName()).arg(strerror(errno)));
+            msg(5000, QString("read config failed: cannot open <%1>: <%2>\n")
+               .arg(f.fileName()).arg(strerror(errno)));
             return;
             }
       QDomDocument doc;
       int line, column;
       QString err;
 
-      fontWeight = 50;
+      fontWeight = QFont::Normal;
       fontSize   = 18;
 
       if (!doc.setContent(&f, false, &err, &line, &column)) {
@@ -167,7 +166,7 @@ void Ped::readConfig()
                               }
                         }
                   else if (tag == "fontWeight")
-                        fontWeight = e.text().toInt();
+                        fontWeight = QFont::Weight(e.text().toInt());
                   else
                         domError(nnode);
                   }
