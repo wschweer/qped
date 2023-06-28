@@ -96,7 +96,7 @@ class LinePos;
 //---------------------------------------------------------
 //    iLine
 //    ein iLine Objekt realisiert das Pointer Paradigma
-//    für eine Line
+//    für eine Line/Textzeile
 //---------------------------------------------------------
 
 class iLine {

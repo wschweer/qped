@@ -322,8 +322,7 @@ void File::insert_char(Line* l, int xpos, const QChar& c)
 //    File::delete_columns
 //---------------------------------------------------------
 
-void File::delete_columns(iLineList sl, iLineList el, int col1,
-   int col2)
+void File::delete_columns(iLineList sl, iLineList el, int col1, int col2)
       {
       if (col2 < col1) {
             int tmp = col1;
@@ -440,8 +439,7 @@ void File::delete_char(Line* l, int xpos)
 //   replace
 //---------------------------------------------------------
 
-void File::replace(Line* l, const iLine ib, const iLine ie,
-   const char* txt)
+void File::replace(Line* l, const iLine ib, const iLine ie, const char* txt)
       {
       undo_list.append_line(l);
 
@@ -453,6 +451,27 @@ void File::replace(Line* l, const iLine ib, const iLine ie,
             l->delete_char(scol);
       while (*txt)
             l->insert_char(scol++, *txt++);
+      modified = true;
+      dirty = true;
+      }
+
+//---------------------------------------------------------
+//    toUpper
+//---------------------------------------------------------
+
+void File::toUpper(iLineList begin, iLineList end, int col1, int col2, bool colMode)
+      {
+      if (col2 < col1)
+            std::swap(col1, col2);
+      for (iLineList i = begin; i != end; ++i) {
+            if (colMode)
+                  ; // l.push_back(i->columns(col1, col2));
+            else {
+                  undo_type(UNDO_CHANGE_LINE);
+                  undo_line(&*i);
+                  (*i).change((*i).text().toUpper());
+                  }
+            }
       modified = true;
       dirty = true;
       }

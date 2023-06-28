@@ -69,10 +69,11 @@ Editor::Editor(QWidget* parent, Ped* p)
       grid->setColumnStretch(0, 5);
 
       connect(fb,      SIGNAL(currentChanged(int)), this, SLOT(gotoKontext(int)));
-      connect(fb,      SIGNAL(doubleClick(int)),   this, SLOT(removeKontext(int)));
-      connect(hScroll, SIGNAL(valueChanged(int)),  this, SLOT(hScrollTo(int)));
-      connect(vScroll, SIGNAL(valueChanged(int)),  this, SLOT(vScrollTo(int)));
+      connect(fb,      SIGNAL(doubleClick(int)),    this, SLOT(removeKontext(int)));
+      connect(hScroll, SIGNAL(valueChanged(int)),   this, SLOT(hScrollTo(int)));
+      connect(vScroll, SIGNAL(valueChanged(int)),   this, SLOT(vScrollTo(int)));
       addStack(eframe);
+      fb->update();
       }
 
 //---------------------------------------------------------

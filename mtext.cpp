@@ -254,7 +254,7 @@ void Kontext::cmd_put()
 void Kontext::put(Text& stext)
       {
       bool coltype;
-      LineList* sl = stext.read(coltype);
+      LineList* sl = stext.read(&coltype);
       iLineList line = cursor;
 
       if (coltype) {

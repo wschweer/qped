@@ -78,6 +78,7 @@ Kontext::MtextEditFunction Kontext::mfkt[] = {
       { CMD_DEL_WORD,     F(del_word),       true},
       { CMD_TAB,          F(insert_tab),     true},
       { CMD_DEL_CHAR,     F(delete_char),    true},
+      { CMD_TOUPPER,      F(cmdToUpper),     true },
       { CMD_RUBOUT,       F(rubout),         true},
       { CMD_DEL_LINE,     F(delete_line),    true},
       { CMD_NEWLINE,      F(newline),        true},
@@ -528,9 +529,9 @@ void Kontext::register_update(int flags)
 //    Text::read
 //---------------------------------------------------------
 
-LineList* Text::read(bool& coltype)
+LineList* Text::read(bool* coltype)
       {
-      coltype = column_type;
+      *coltype = column_type;
       return &l;
       }
 
@@ -604,7 +605,7 @@ void Kontext::pick()
             }
 
       bool coltype;
-      LineList* pl = pick_buffer.read(coltype);
+      LineList* pl = pick_buffer.read(&coltype);
       LinePos s(pl, pl->begin(), 0, 0);
       QString dst;
 
@@ -1527,5 +1528,24 @@ void Kontext::getpos(int& x, int& y, int& xoff, int& yoff) const
       x    = pos.spalte;
       xoff = pos.xoffset;
       yoff = pos.yoffset;
+      }
+
+//---------------------------------------------------------
+//    Kontext::cmdToUpper
+//---------------------------------------------------------
+
+void Kontext::cmdToUpper()
+      {
+      qDebug("cmdToUpper");
+      iLineList sl;
+      iLineList el;
+      if (mark_interval(sl, el) == -1) {
+            qDebug("nothing marked");
+            return;
+            }
+      ryposition(1 - distance(sl, el));
+      f->undo_spos(&pos);           // Startposition f. undo setzen
+      f->toUpper(sl, el, mpos1.spalte, mpos2.spalte, mark_mode == MARK_COLUMNS);
+      register_update(UPDATE_ALL);
       }
 

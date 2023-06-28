@@ -130,9 +130,7 @@ class File {
 
       void undo_start(Position* p)       { undo_list.start_new(p); }
       void undo_spos(Position* p)        { undo_list.sPos(p); }
-      void undo_type(UndoType t)         {
-		(*(undo_list.cur_undo))->type = t;
-		}
+      void undo_type(UndoType t)         { (*(undo_list.cur_undo))->type = t; }
       void undo_type(UndoType t, int p)        {
 		(*(undo_list.cur_undo))->type = t;
 		(*(undo_list.cur_undo))->n    = p;
@@ -157,11 +155,11 @@ class File {
       void del_word(Line*, int);
 	void insert_column(Line* d, Line*s, int col);
 	void delete_columns(iLineList, iLineList, int, int);
-      void replace(Line*, const iLine, const iLine,
-         const char*);
+      void replace(Line*, const iLine, const iLine, const char*);
       void setDirty() { dirty = true; }
       void setModified() { modified = true; }
       int tabl() const;
+      void toUpper(iLineList begin, iLineList end, int col1, int col2, bool colMode);
       };
 
 //---------------------------------------------------------

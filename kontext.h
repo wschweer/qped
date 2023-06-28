@@ -92,6 +92,8 @@ class Kontext {
       void cmd_start_line(const QString&)  { xposition(0); }
       void cmd_end_line(const QString&)    { xposition(-1); }
 
+      void cmdToUpper();
+
       void cmd_link();
       void about();
       char* findProc(LinePos&, int);

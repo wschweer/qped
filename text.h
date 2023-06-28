@@ -25,7 +25,7 @@ class Text {
 
    public:
       Text()     {}
-      LineList* read(bool& coltype);
+      LineList* read(bool* coltype);
       void write(LineList*, iLineList, iLineList, int, int, bool);
       };
 

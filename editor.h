@@ -32,7 +32,7 @@ class EditWin;
 class TabBar : public QTabBar {
       Q_OBJECT
 
-      virtual void mouseDoubleClickEvent(QMouseEvent* ev) {
+      virtual void mouseDoubleClickEvent(QMouseEvent* ev) override {
             emit doubleClick(currentIndex());
             QTabBar::mouseDoubleClickEvent(ev);
             }

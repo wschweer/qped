@@ -232,8 +232,8 @@ void EditWin::mouseReleaseEvent(QMouseEvent* e)
 void EditWin::mousePressEvent(QMouseEvent* e)
       {
       mouseButton = e->button();
-      int x = e->x();
-      int y = e->y();
+      int x = e->pos().x();
+      int y = e->pos().y();
       if (mouseButton == Qt::MiddleButton) {
             QClipboard* cb = QApplication::clipboard();
             QString txt = cb->text(QClipboard::Clipboard);
@@ -257,8 +257,8 @@ void EditWin::mousePressEvent(QMouseEvent* e)
 void EditWin::mouseDoubleClickEvent(QMouseEvent* e)
       {
       mouseButton = e->button();
-      int x = e->x();
-      int y = e->y();
+      int x = e->pos().x();
+      int y = e->pos().y();
       if (mouseButton == Qt::LeftButton)
             (*(editor->kll))->buttonpress(x, y, true, 0);
       }
@@ -273,7 +273,7 @@ void EditWin::mouseMoveEvent(QMouseEvent* e)
       //   liefert keinen Button-Status!
       //
       if (mouseButton == Qt::LeftButton) {
-      	(*(editor->kll))->buttonmotion(e->x(), e->y());
+      	(*(editor->kll))->buttonmotion(e->pos().x(), e->pos().y());
             }
       }
 

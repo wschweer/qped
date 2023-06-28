@@ -85,6 +85,7 @@ enum {
       CMD_INSERT_LINE,
       CMD_GET_WORD,
       CMD_INPUT_STRING,
+      CMD_TOUPPER,
       CMD_MAXCODE
       };
 

@@ -257,6 +257,8 @@ static const ActionList editActions[] = {
       { CMD_RUBOUT,       Qt::Key_Backspace },
       { CMD_NEWLINE,      Qt::Key_Return },
       { CMD_ENTER_INPUT,  Qt::Key_Escape },
+
+      { CMD_TOUPPER,       QKeySequence(Qt::Key_P | CONTROL, Qt::Key_U | CONTROL) },
       };
 
 //---------------------------------------------------------
@@ -295,7 +297,6 @@ Ped::Ped(int argc, char** argv)
       aboutDialog    = 0;
       commandsDialog = 0;
       recmode        = false;
-
       openIcon       = QPixmap(fileopen);
       saveIcon       = QPixmap(filesave);
 
@@ -971,7 +972,7 @@ void  Ped::edit_cmd(int cmd, const QString param)
       if (recmode)
             rec_cmd(cmd, param);
       if (cmd >= CMD_MAXCODE) {        // ignore unknown commands
-            printf("unknown cmd %x\n", cmd);
+            qCritical("unknown cmd %x", cmd);
             return;
             }
       if (enterActive) {
